@@ -1,0 +1,62 @@
+@* Name: LIM RUI YANG RYAN *@
+@* Admin No: 252206Z *@
+@* Tutorial Group: IT2508 *@
+@page
+@model ArcaneVault.Web.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7 col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="h4 mb-1"><i class="bi bi-box-arrow-in-right me-2"></i>Sign in</h1>
+                <p class="text-muted small mb-4">Access your Arcane Vault collection.</p>
+
+                <form method="post">
+                    <input type="hidden" asp-for="ReturnUrl" />
+
+                    @* Shows "Incorrect username or password." returned by the API. *@
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none-if-empty"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.UserName" class="form-label"></label>
+                        <input asp-for="Input.UserName" class="form-control" autocomplete="username" />
+                        <span asp-validation-for="Input.UserName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Input.Password" class="form-label"></label>
+                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" />
+                        <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-box-arrow-in-right me-1"></i>Sign in
+                    </button>
+                </form>
+
+                <hr class="my-4" />
+                <p class="text-center mb-0 small">
+                    No account yet? <a asp-page="/Account/Register">Register here</a>
+                </p>
+            </div>
+        </div>
+
+        @* Demo credentials, so the prototype can be assessed without creating an account first. *@
+        <div class="card mt-3 border-0 bg-body-secondary">
+            <div class="card-body py-3">
+                <p class="small text-muted mb-2"><i class="bi bi-info-circle me-1"></i><strong>Demo accounts</strong></p>
+                <div class="small font-monospace">
+                    <div>Staff &nbsp;&nbsp;&nbsp;&mdash; <strong>staff</strong> / Staff@@123</div>
+                    <div>Collector &mdash; <strong>collector</strong> / User@@123</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

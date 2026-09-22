@@ -1,0 +1,76 @@
+@* Name: LIM RUI YANG RYAN *@
+@* Admin No: 252206Z *@
+@* Tutorial Group: IT2508 *@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="p-5 mb-4 bg-body-secondary rounded-3">
+    <div class="container-fluid py-3">
+        <h1 class="display-5 fw-bold"><i class="bi bi-gem me-2"></i>Arcane Vault</h1>
+        <p class="col-md-9 fs-5 text-muted">
+            Catalogue your collectibles, track what you hold, and see what the wider
+            collector community is chasing.
+        </p>
+
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a asp-page="/CollectionItems/Index" class="btn btn-primary btn-lg mt-2">
+                <i class="bi bi-collection me-1"></i>Go to my collection
+            </a>
+            @if (User.IsInRole("Staff"))
+            {
+                <a asp-page="/Insights/Index" class="btn btn-outline-secondary btn-lg mt-2 ms-2">
+                    <i class="bi bi-graph-up-arrow me-1"></i>Vault Insights
+                </a>
+            }
+        }
+        else
+        {
+            <a asp-page="/Account/Register" class="btn btn-primary btn-lg mt-2">
+                <i class="bi bi-person-plus me-1"></i>Get started
+            </a>
+            <a asp-page="/Account/Login" class="btn btn-outline-secondary btn-lg mt-2 ms-2">
+                <i class="bi bi-box-arrow-in-right me-1"></i>Sign in
+            </a>
+        }
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5 card-title"><i class="bi bi-collection text-primary me-2"></i>Manage your collection</h2>
+                <p class="card-text text-muted small">
+                    Add the collectibles you own, record how many you started with and how
+                    many you still hold, and classify them using the platform's categories.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5 card-title"><i class="bi bi-search text-primary me-2"></i>Find anything fast</h2>
+                <p class="card-text text-muted small">
+                    One search box matches across every field &mdash; item name, quantity,
+                    owner, or category &mdash; so a large collection stays navigable.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5 card-title"><i class="bi bi-graph-up-arrow text-primary me-2"></i>Vault Insights</h2>
+                <p class="card-text text-muted small">
+                    Staff see which collectibles are actually moving between collections,
+                    ranked by a Demand Index built from real collection activity.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+@* Name: LIM RUI YANG RYAN *@
+@* Admin No: 252206Z *@
+@* Tutorial Group: IT2508 *@
+@page
+@model ArcaneVault.Web.Pages.CollectionItems.DetailsModel
+@{
+    ViewData["Title"] = "Item Details";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="./Index">My Collection</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Details</li>
+    </ol>
+</nav>
+
+@if (Model.Item is not null)
+{
+    <h1 class="h3 mb-3">@Model.Item.ItemName</h1>
+
+    <div class="row g-3">
+        <div class="col-lg-7">
+            <div class="card h-100">
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Item ID</dt>
+                        <dd class="col-sm-8 font-monospace">@Model.Item.ItemId</dd>
+
+                        <dt class="col-sm-4">Item name</dt>
+                        <dd class="col-sm-8">@Model.Item.ItemName</dd>
+
+                        <dt class="col-sm-4">Categories</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Item.CategoryNames.Length == 0)
+                            {
+                                <span class="text-muted">Uncategorised</span>
+                            }
+                            else
+                            {
+                                @foreach (var name in Model.Item.CategoryNames)
+                                {
+                                    <span class="badge text-bg-secondary me-1">@name</span>
+                                }
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Starting quantity</dt>
+                        <dd class="col-sm-8">@Model.Item.StartingQuantity</dd>
+
+                        <dt class="col-sm-4">Current quantity</dt>
+                        <dd class="col-sm-8 fw-semibold">@Model.Item.CurrentQuantity</dd>
+
+                        <dt class="col-sm-4">Added</dt>
+                        <dd class="col-sm-8">@Model.Item.CreatedAt.ToString("dd MMM yyyy")</dd>
+
+                        <dt class="col-sm-4">Last updated</dt>
+                        <dd class="col-sm-8">@Model.Item.LastUpdatedAt.ToString("dd MMM yyyy")</dd>
+                    </dl>
+                </div>
+                <div class="card-footer d-flex gap-2">
+                    <a asp-page="./Edit" asp-route-id="@Model.Item.ItemId" class="btn btn-primary btn-sm">
+                        <i class="bi bi-pencil me-1"></i>Edit
+                    </a>
+                    <a asp-page="./Delete" asp-route-id="@Model.Item.ItemId" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-trash me-1"></i>Remove
+                    </a>
+                    <a asp-page="./Index" class="btn btn-outline-secondary btn-sm ms-auto">Back to collection</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card h-100 border-primary-subtle">
+                <div class="card-body">
+                    <h2 class="h6 text-uppercase text-muted mb-3">Movement</h2>
+
+                    @if (Model.Item.UnitsMoved > 0)
+                    {
+                        var movedPercent = Model.Item.StartingQuantity == 0
+                            ? 0
+                            : (int)Math.Round(Model.Item.UnitsMoved * 100.0 / Model.Item.StartingQuantity);
+
+                        <p class="mb-2">
+                            <span class="display-6 fw-semibold">@Model.Item.UnitsMoved</span>
+                            <span class="text-muted">of @Model.Item.StartingQuantity moved on</span>
+                        </p>
+                        <div class="progress mb-2" role="progressbar"
+                             aria-valuenow="@movedPercent" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-warning" style="width:@(movedPercent)%"></div>
+                        </div>
+                        <p class="small text-muted mb-0">
+                            @movedPercent% of what you acquired has been traded, sold or given away.
+                            This contributes to the platform's Demand Index for this collectible.
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">
+                            <i class="bi bi-box-seam me-1"></i>
+                            You still hold everything you acquired of this item.
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

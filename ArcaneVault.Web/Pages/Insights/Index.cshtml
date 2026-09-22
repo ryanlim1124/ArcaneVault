@@ -1,0 +1,168 @@
+@* Name: LIM RUI YANG RYAN *@
+@* Admin No: 252206Z *@
+@* Tutorial Group: IT2508 *@
+@page
+@model ArcaneVault.Web.Pages.Insights.IndexModel
+@{
+    ViewData["Title"] = "Vault Insights";
+}
+
+<div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-2">
+    <div>
+        <h1 class="h3 mb-1"><i class="bi bi-graph-up-arrow me-2"></i>Vault Insights</h1>
+        <p class="text-muted small mb-0">
+            Which collectibles are actually moving between collections &mdash; measured from
+            real collection activity, not guesswork.
+        </p>
+    </div>
+    <button id="refreshButton" type="button" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+    </button>
+</div>
+
+<!-- ============ KPI row ============ -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="text-muted small text-uppercase">Collectors</div>
+                <div class="fs-3 fw-semibold" id="kpiCollectors">&mdash;</div>
+                <div class="text-muted small" id="kpiActive">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="text-muted small text-uppercase">Distinct collectibles</div>
+                <div class="fs-3 fw-semibold" id="kpiCollectibles">&mdash;</div>
+                <div class="text-muted small" id="kpiRecords">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="text-muted small text-uppercase">Units held</div>
+                <div class="fs-3 fw-semibold" id="kpiUnitsHeld">&mdash;</div>
+                <div class="text-muted small" id="kpiUnitsMoved">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="text-muted small text-uppercase">Platform turnover</div>
+                <div class="fs-3 fw-semibold" id="kpiTurnover">&mdash;</div>
+                <div class="text-muted small">of all acquired units have moved on</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ Demand Index leaderboard ============ -->
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <h2 class="h5 mb-0"><i class="bi bi-fire text-danger me-1"></i>Demand Index</h2>
+            <span class="text-muted small">
+                Ranked by turnover (50%), collector reach (30%) and scarcity (20%).
+            </span>
+        </div>
+        <select id="demandTopSelect" class="form-select form-select-sm" style="width:auto;">
+            <option value="10" selected>Top 10</option>
+            <option value="20">Top 20</option>
+            <option value="50">All</option>
+        </select>
+    </div>
+    <div class="card-body">
+        <div id="demandEmptyState" class="text-muted text-center py-4 d-none">
+            No collection data yet.
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="demandTable">
+                <thead>
+                    <tr>
+                        <th style="width:2rem;">#</th>
+                        <th>Collectible</th>
+                        <th class="text-end">Holders</th>
+                        <th class="text-end">Moved</th>
+                        <th class="text-end">Turnover</th>
+                        <th>Demand Index</th>
+                        <th class="text-end">Tier</th>
+                    </tr>
+                </thead>
+                <tbody id="demandTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer text-muted small">
+        <i class="bi bi-info-circle me-1"></i>
+        <strong>How this is calculated:</strong> every collection item records both the quantity a
+        collector originally acquired and the quantity they still hold. The difference is the only
+        evidence in the system that a collectible has left a collection &mdash; traded, sold or given
+        away. Aggregated across all collectors, that becomes a measurable demand signal.
+    </div>
+</div>
+
+<!-- ============ Charts ============ -->
+<div class="row g-3 mb-4">
+    <div class="col-lg-5">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5 card-title">Category popularity</h2>
+                <p class="text-muted small">Share of classified items in each category.</p>
+                <div id="categoryEmptyState" class="text-muted text-center py-5 d-none">
+                    No categorised items yet.
+                </div>
+                <div style="height:280px;">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                    <div>
+                        <h2 class="h5 card-title">Platform activity</h2>
+                        <p class="text-muted small">Items added and updated per month.</p>
+                    </div>
+                    <select id="activityMonthsSelect" class="form-select form-select-sm" style="width:auto;">
+                        <option value="6" selected>Last 6 months</option>
+                        <option value="12">Last 12 months</option>
+                        <option value="3">Last 3 months</option>
+                    </select>
+                </div>
+                <div id="activityEmptyState" class="text-muted text-center py-5 d-none">
+                    No activity in this period.
+                </div>
+                <div style="height:280px;">
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ Rule-based highlights ============ -->
+<div class="card mb-4">
+    <div class="card-body">
+        <h2 class="h5 card-title">
+            <i class="bi bi-lightbulb-fill text-warning me-1"></i>What this means
+        </h2>
+        <p class="text-muted small">
+            Plain-language observations generated from the figures above.
+        </p>
+        <div id="highlightsEmptyState" class="text-muted text-center py-3 d-none">
+            No insights available yet.
+        </div>
+        <div id="highlightsList"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="~/js/insights.js" asp-append-version="true"></script>
+}

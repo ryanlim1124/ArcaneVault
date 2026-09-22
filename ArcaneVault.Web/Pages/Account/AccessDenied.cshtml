@@ -1,0 +1,22 @@
+@* Name: LIM RUI YANG RYAN *@
+@* Admin No: 252206Z *@
+@* Tutorial Group: IT2508 *@
+@page
+@model ArcaneVault.Web.Pages.Account.AccessDeniedModel
+@{
+    ViewData["Title"] = "Access denied";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6 text-center py-5">
+        <i class="bi bi-shield-lock display-1 text-warning"></i>
+        <h1 class="h3 mt-3">Access denied</h1>
+        <p class="text-muted">
+            This area is restricted to Arcane Vault staff. Your account does not have the
+            required permissions.
+        </p>
+        <a asp-page="/Index" class="btn btn-primary mt-2">
+            <i class="bi bi-house-door me-1"></i>Back to home
+        </a>
+    </div>
+</div>

@@ -1,0 +1,148 @@
+@* Name: LIM RUI YANG RYAN *@
+@* Admin No: 252206Z *@
+@* Tutorial Group: IT2508 *@
+@page
+@model ArcaneVault.Web.Pages.CollectionItems.IndexModel
+@{
+    ViewData["Title"] = "My Collection";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <div>
+        <h1 class="h3 mb-0"><i class="bi bi-collection me-2"></i>My Collection</h1>
+        <p class="text-muted small mb-0">@Model.Result.TotalCount item(s) in your collection.</p>
+    </div>
+    <a asp-page="./Create" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i>Add Item
+    </a>
+</div>
+
+@if (Model.ErrorMessage is not null)
+{
+    <div class="alert alert-danger">
+        <i class="bi bi-exclamation-triangle-fill me-1"></i>@Model.ErrorMessage
+    </div>
+}
+
+@* Cross-field search: one box that matches item name, quantities, item id, or category. *@
+<form method="get" class="card mb-4">
+    <div class="card-body">
+        <label asp-for="Search" class="form-label small text-muted mb-1">
+            Search your collection
+        </label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input asp-for="Search" class="form-control"
+                   placeholder="Match any field &mdash; name, quantity, item ID, or category&hellip;" />
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+            @if (!string.IsNullOrWhiteSpace(Model.Search))
+            {
+                <a asp-page="./Index" class="btn btn-outline-secondary">Clear</a>
+            }
+        </div>
+    </div>
+</form>
+
+@if (Model.Result.Items.Count == 0)
+{
+    <div class="text-center text-muted py-5">
+        <i class="bi bi-inbox display-4 d-block mb-2"></i>
+        @if (!string.IsNullOrWhiteSpace(Model.Search))
+        {
+            <p class="mb-1">No items match &ldquo;@Model.Search&rdquo;.</p>
+            <a asp-page="./Index" class="btn btn-sm btn-outline-secondary mt-2">Clear search</a>
+        }
+        else
+        {
+            <p class="mb-1">Your collection is empty.</p>
+            <a asp-page="./Create" class="btn btn-sm btn-primary mt-2">
+                <i class="bi bi-plus-lg me-1"></i>Add your first item
+            </a>
+        }
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Item</th>
+                    <th>Categories</th>
+                    <th class="text-end">Started</th>
+                    <th class="text-end">Current</th>
+                    <th class="text-end">Moved</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Result.Items)
+                {
+                    <tr>
+                        <td class="text-muted small font-monospace">@item.ItemId</td>
+                        <td>@item.ItemName</td>
+                        <td>
+                            @if (item.CategoryNames.Length == 0)
+                            {
+                                <span class="text-muted small">Uncategorised</span>
+                            }
+                            else
+                            {
+                                @foreach (var name in item.CategoryNames)
+                                {
+                                    <span class="badge text-bg-secondary me-1">@name</span>
+                                }
+                            }
+                        </td>
+                        <td class="text-end">@item.StartingQuantity</td>
+                        <td class="text-end fw-semibold">@item.CurrentQuantity</td>
+                        <td class="text-end">
+                            @if (item.UnitsMoved > 0)
+                            {
+                                <span class="badge text-bg-warning">&minus;@item.UnitsMoved</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">&mdash;</span>
+                            }
+                        </td>
+                        <td class="text-end text-nowrap">
+                            <a asp-page="./Details" asp-route-id="@item.ItemId"
+                               class="btn btn-sm btn-outline-secondary" title="Details">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a asp-page="./Edit" asp-route-id="@item.ItemId"
+                               class="btn btn-sm btn-outline-primary" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a asp-page="./Delete" asp-route-id="@item.ItemId"
+                               class="btn btn-sm btn-outline-danger" title="Remove">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Collection pagination">
+            <ul class="pagination">
+                @for (var p = 1; p <= Model.TotalPages; p++)
+                {
+                    <li class="page-item @(p == Model.PageNumber ? "active" : "")">
+                        @* Carry the current search term across page links so paging does
+                           not silently reset the filter. *@
+                        <a class="page-link"
+                           asp-page="./Index"
+                           asp-route-PageNumber="@p"
+                           asp-route-Search="@Model.Search">@p</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+}

@@ -1,0 +1,100 @@
+@* Name: LIM RUI YANG RYAN *@
+@* Admin No: 252206Z *@
+@* Tutorial Group: IT2508 *@
+@page
+@model ArcaneVault.Web.Pages.CollectionItems.CreateModel
+@{
+    ViewData["Title"] = "Add Item";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="./Index">My Collection</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add item</li>
+    </ol>
+</nav>
+
+<h1 class="h3 mb-3">Add an item to your collection</h1>
+
+@if (Model.ErrorMessage is not null)
+{
+    <div class="alert alert-danger">
+        <i class="bi bi-exclamation-triangle-fill me-1"></i>@Model.ErrorMessage
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none-if-empty"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.ItemName" class="form-label"></label>
+                        <input asp-for="Input.ItemName" class="form-control"
+                               placeholder="e.g. Charizard Base Set Holo" />
+                        <span asp-validation-for="Input.ItemName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-sm-6">
+                            <label asp-for="Input.StartingQuantity" class="form-label"></label>
+                            <input asp-for="Input.StartingQuantity" type="number" min="0" class="form-control" />
+                            <div class="form-text">How many you originally acquired.</div>
+                            <span asp-validation-for="Input.StartingQuantity" class="text-danger small"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label asp-for="Input.CurrentQuantity" class="form-label"></label>
+                            <input asp-for="Input.CurrentQuantity" type="number" min="0" class="form-control" />
+                            <div class="form-text">How many you still hold today.</div>
+                            <span asp-validation-for="Input.CurrentQuantity" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">@Html.DisplayNameFor(m => m.Input.CategoryCodes)</label>
+                        @if (Model.CategoryOptions.Count == 0)
+                        {
+                            <p class="text-muted small mb-0">
+                                No categories are available yet. Staff need to create them first.
+                            </p>
+                        }
+                        else
+                        {
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-2">
+                                @foreach (var option in Model.CategoryOptions)
+                                {
+                                    <div class="col">
+                                        <div class="form-check">
+                                            @* All checkboxes share the name Input.CategoryCodes, so the
+                                               model binder collects the ticked ones into the string[]. *@
+                                            <input class="form-check-input" type="checkbox"
+                                                   name="Input.CategoryCodes" value="@option.Value"
+                                                   id="cat-@option.Value"
+                                                   checked="@(Model.Input.CategoryCodes.Contains(option.Value))" />
+                                            <label class="form-check-label small" for="cat-@option.Value">
+                                                @option.Text
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg me-1"></i>Add to collection
+                        </button>
+                        <a asp-page="./Index" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

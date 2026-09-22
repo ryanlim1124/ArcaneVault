@@ -1,0 +1,64 @@
+@* Name: LIM RUI YANG RYAN *@
+@* Admin No: 252206Z *@
+@* Tutorial Group: IT2508 *@
+@page
+@model ArcaneVault.Web.Pages.CollectionItems.DeleteModel
+@{
+    ViewData["Title"] = "Remove Item";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="./Index">My Collection</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Remove</li>
+    </ol>
+</nav>
+
+<h1 class="h3 mb-3">Remove from collection</h1>
+
+@if (Model.Item is not null)
+{
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="card border-danger">
+                <div class="card-header bg-danger-subtle">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                    Remove this item from your collection?
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Item</dt>
+                        <dd class="col-sm-8">@Model.Item.ItemName</dd>
+
+                        <dt class="col-sm-4">Categories</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Item.CategoryNames.Length == 0)
+                            {
+                                <span class="text-muted">Uncategorised</span>
+                            }
+                            else
+                            {
+                                @foreach (var name in Model.Item.CategoryNames)
+                                {
+                                    <span class="badge text-bg-secondary me-1">@name</span>
+                                }
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Quantity held</dt>
+                        <dd class="col-sm-8">@Model.Item.CurrentQuantity of @Model.Item.StartingQuantity</dd>
+                    </dl>
+                </div>
+                <div class="card-footer">
+                    <form method="post">
+                        <input type="hidden" asp-for="ItemId" />
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash me-1"></i>Yes, remove it
+                        </button>
+                        <a asp-page="./Index" class="btn btn-outline-secondary ms-2">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}

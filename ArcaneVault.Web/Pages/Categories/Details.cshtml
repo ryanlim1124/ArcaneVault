@@ -1,0 +1,64 @@
+@* Name: LIM RUI YANG RYAN *@
+@* Admin No: 252206Z *@
+@* Tutorial Group: IT2508 *@
+@page
+@model ArcaneVault.Web.Pages.Categories.DetailsModel
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="./Index">Categories</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Details</li>
+    </ol>
+</nav>
+
+@if (Model.ErrorMessage is not null)
+{
+    <div class="alert alert-danger">
+        <i class="bi bi-exclamation-triangle-fill me-1"></i>@Model.ErrorMessage
+    </div>
+}
+else if (Model.Category is not null)
+{
+    <h1 class="h3 mb-3">@Model.Category.CategoryName</h1>
+
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Category code</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge text-bg-secondary font-monospace">@Model.Category.CategoryCode</span>
+                        </dd>
+
+                        <dt class="col-sm-4">Category name</dt>
+                        <dd class="col-sm-8">@Model.Category.CategoryName</dd>
+
+                        <dt class="col-sm-4">Items using it</dt>
+                        <dd class="col-sm-8">
+                            @Model.Category.ItemCount
+                            @if (Model.Category.ItemCount > 0)
+                            {
+                                <span class="text-muted small d-block">
+                                    This category cannot be deleted while items still reference it.
+                                </span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer d-flex gap-2">
+                    <a asp-page="./Edit" asp-route-code="@Model.Category.CategoryCode" class="btn btn-primary btn-sm">
+                        <i class="bi bi-pencil me-1"></i>Edit
+                    </a>
+                    <a asp-page="./Delete" asp-route-code="@Model.Category.CategoryCode" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-trash me-1"></i>Delete
+                    </a>
+                    <a asp-page="./Index" class="btn btn-outline-secondary btn-sm ms-auto">Back to list</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet --list-sdks)",
+      "Bash(dotnet tool *)",
+      "Bash(dotnet dev-certs *)",
+      "Bash(dotnet new *)",
+      "Bash(dotnet restore *)",
+      "Bash(dotnet list *)",
+      "Bash(curl -s \"https://api.nuget.org/v3-flatcontainer/sqlitepclraw.lib.e_sqlite3/index.json\")"
+    ]
+  }
+}

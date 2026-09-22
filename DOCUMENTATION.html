@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Arcane Vault — Complete Documentation</title>
+<style>
+  :root{
+    --bg:#f3f4f6; --panel:#fbfbfc; --panel2:#e9ebef; --ink:#1b2027; --soft:#4f5762; --faint:#7f8792;
+    --accent:#8a6220; --accent2:#2f5d82; --line:#d7dade;
+    --cbg:#1a1f25; --cink:#dee3e8; --ckey:#d9a441; --cstr:#9ec99b; --ccom:#7a848e; --ctype:#7fb0d4;
+    --hot:#b4462f; --rising:#b57420; --steady:#3a6b96; --dormant:#7a828b;
+    --warn:#a8741d;
+    --r:7px;
+    --serif:"Hoefler Text","Iowan Old Style",Palatino,"Palatino Linotype",Georgia,serif;
+    --sans:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,"Cascadia Mono",Consolas,"Liberation Mono",monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#131619;--panel:#1a1f24;--panel2:#222831;--ink:#e4e8ec;--soft:#a5aeb8;--faint:#767f89;
+      --accent:#d4a24c;--accent2:#7fb0d4;--line:#2b3239;--cbg:#0e1216;--cink:#dce1e6;
+      --hot:#e0705a;--rising:#d9a441;--steady:#6fa3cf;--dormant:#8b939c;--warn:#d0a044;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#131619;--panel:#1a1f24;--panel2:#222831;--ink:#e4e8ec;--soft:#a5aeb8;--faint:#767f89;
+    --accent:#d4a24c;--accent2:#7fb0d4;--line:#2b3239;--cbg:#0e1216;--cink:#dce1e6;
+    --hot:#e0705a;--rising:#d9a441;--steady:#6fa3cf;--dormant:#8b939c;--warn:#d0a044;
+  }
+  :root[data-theme="light"]{
+    --bg:#f3f4f6;--panel:#fbfbfc;--panel2:#e9ebef;--ink:#1b2027;--soft:#4f5762;--faint:#7f8792;
+    --accent:#8a6220;--accent2:#2f5d82;--line:#d7dade;--cbg:#1a1f25;--cink:#dee3e8;
+    --hot:#b4462f;--rising:#b57420;--steady:#3a6b96;--dormant:#7a828b;--warn:#a8741d;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.62;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent)}
+
+  .top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:11px 20px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .top .b{font-family:var(--serif);font-size:1rem}
+  .top .b strong{color:var(--accent)}
+  .top .m{font-family:var(--mono);font-size:.68rem;color:var(--faint);text-transform:uppercase;letter-spacing:.05em}
+
+  .shell{display:grid;grid-template-columns:250px minmax(0,790px);gap:40px;max-width:1110px;margin:0 auto;padding:30px 20px 110px;justify-content:center}
+
+  nav.toc{position:sticky;top:60px;align-self:start;max-height:calc(100vh - 84px);overflow-y:auto;padding-right:6px;font-size:.82rem}
+  nav.toc .grp{font-family:var(--mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.09em;color:var(--faint);margin:15px 0 5px;padding-left:2px}
+  nav.toc .grp:first-child{margin-top:0}
+  nav.toc a{display:block;padding:3px 0 3px 11px;border-left:2px solid transparent;color:var(--soft);text-decoration:none;font-size:.795rem;line-height:1.4}
+  nav.toc a:hover{color:var(--ink);border-left-color:var(--line);background:var(--panel)}
+  nav.toc a.star{color:var(--accent);font-weight:600}
+  nav.toc a.mono{font-family:var(--mono);font-size:.755rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  .cover{border-bottom:2px solid var(--accent);padding-bottom:22px;margin-bottom:8px}
+  .cover .eb{font-family:var(--mono);font-size:.73rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:9px}
+  .cover h1{font-family:var(--serif);font-size:2.3rem;line-height:1.12;margin:0 0 10px;font-weight:600;text-wrap:balance}
+  .cover .sub{color:var(--soft);font-size:1.03rem;max-width:60ch;margin:0 0 16px}
+  .cover dl{display:grid;grid-template-columns:auto 1fr;gap:3px 14px;margin:0;font-size:.87rem}
+  .cover dt{color:var(--faint);font-family:var(--mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}
+  .cover dd{margin:0}
+
+  h2.part{font-family:var(--serif);font-size:1.55rem;margin:54px 0 6px;font-weight:600;padding-bottom:7px;border-bottom:2px solid var(--accent);scroll-margin-top:72px}
+  h2.part .n{font-family:var(--mono);font-size:.71rem;color:var(--accent);display:block;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+  h3.sec{font-family:var(--serif);font-size:1.24rem;margin:30px 0 7px;font-weight:600;scroll-margin-top:72px}
+  h4{font-size:.87rem;margin:16px 0 5px;font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+  p{max-width:68ch;margin:11px 0}
+  ul,ol{max-width:66ch;padding-left:1.25em}
+  li{margin:5px 0}
+  .lede{color:var(--soft);max-width:66ch}
+
+  article.file{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin:18px 0;scroll-margin-top:72px}
+  article.file.starred{border-color:var(--accent);border-left-width:3px}
+  article.file h3{font-family:var(--mono);font-size:.9rem;margin:0 0 3px;font-weight:600;color:var(--accent2);word-break:break-word}
+  article.file .role{color:var(--soft);font-size:.89rem;margin:0 0 12px}
+  article.file p{font-size:.93rem}
+  article.file ul,article.file ol{font-size:.93rem}
+
+  pre.c{background:var(--cbg);color:var(--cink);border-radius:6px;padding:13px 15px;overflow-x:auto;font-family:var(--mono);font-size:.785rem;line-height:1.55;margin:11px 0}
+  pre.c .k{color:var(--ckey)} pre.c .s{color:var(--cstr)} pre.c .t{color:var(--ctype)} pre.c .m{color:var(--ccom);font-style:italic}
+  code.inl{font-family:var(--mono);font-size:.86em;background:var(--panel2);padding:1px 4px;border-radius:3px}
+
+  .ask{border-left:3px solid var(--accent);background:var(--panel2);border-radius:0 5px 5px 0;padding:10px 13px;margin:13px 0;font-size:.89rem}
+  .ask .q{font-weight:600;display:block;margin-bottom:3px}
+  .ask .q::before{content:"Q  ";font-family:var(--mono);color:var(--accent);font-weight:700}
+  .ask p{margin:0;max-width:none}
+  .warn{border-left:3px solid var(--warn);background:var(--panel2);border-radius:0 5px 5px 0;padding:10px 13px;margin:13px 0;font-size:.89rem}
+  .warn strong{color:var(--warn)}
+  .warn p{max-width:none}
+  .note{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin:14px 0;max-width:68ch}
+  .note .tag{font-family:var(--mono);font-size:.69rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:5px}
+
+  table.t{border-collapse:collapse;width:100%;margin:12px 0;font-size:.855rem}
+  table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+  table.t thead th{color:var(--faint);font-weight:500;font-size:.72rem;text-transform:uppercase;letter-spacing:.03em}
+  table.t td.n,table.t th.n{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono)}
+  .sx{overflow-x:auto}
+
+  .pill{display:inline-block;font-family:var(--mono);font-size:.72rem;padding:2px 8px;border-radius:999px;font-weight:600;color:#fff}
+  .pill.hot{background:var(--hot)} .pill.rising{background:var(--rising)}
+  .pill.steady{background:var(--steady)} .pill.dormant{background:var(--dormant)}
+  .marks{display:inline-block;font-family:var(--mono);font-size:.67rem;background:var(--accent);color:#fff;padding:1px 7px;border-radius:999px;margin-left:6px;vertical-align:middle;font-weight:600}
+
+  details.d{border:1px solid var(--line);border-radius:var(--r);margin:12px 0;background:var(--panel);max-width:68ch}
+  details.d summary{cursor:pointer;padding:9px 14px;font-family:var(--mono);font-size:.79rem;color:var(--accent);list-style:none}
+  details.d summary::-webkit-details-marker{display:none}
+  details.d summary::before{content:"▸ "}
+  details.d[open] summary::before{content:"▾ "}
+  details.d .body{padding:0 15px 13px;color:var(--soft);font-size:.9rem}
+  details.d .body p{max-width:none;margin:8px 0}
+
+  /* Demand Index calculator */
+  .calc{background:var(--panel);border:1px solid var(--accent);border-radius:var(--r);padding:20px 22px;margin:20px 0;max-width:68ch}
+  .calc h4{font-family:var(--serif);font-size:1.05rem;margin:0 0 4px;font-weight:600;text-transform:none;letter-spacing:0}
+  .calc .hint{font-size:.85rem;color:var(--soft);margin:0 0 16px}
+  .calc .row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-bottom:6px}
+  .calc label{font-size:.87rem}
+  .calc label .sub{display:block;font-size:.76rem;color:var(--faint)}
+  .calc input[type=range]{width:100%;accent-color:var(--accent);margin:0 0 10px}
+  .calc .val{font-family:var(--mono);font-size:.87rem;min-width:3.2em;text-align:right;font-variant-numeric:tabular-nums}
+  .calc .out{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+  .calc .comp{display:grid;grid-template-columns:8.5em 1fr 4.2em;gap:9px;align-items:center;font-size:.82rem;margin-bottom:7px}
+  .calc .bar{height:7px;background:var(--panel2);border-radius:4px;overflow:hidden}
+  .calc .bar i{display:block;height:100%;background:var(--accent);border-radius:4px;transition:width .18s ease}
+  .calc .comp .n{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--soft)}
+  .calc .final{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-top:12px}
+  .calc .final .score{font-family:var(--serif);font-size:2.5rem;font-weight:600;font-variant-numeric:tabular-nums}
+  .calc .formula{font-family:var(--mono);font-size:.78rem;color:var(--faint);margin-top:9px;word-break:break-word}
+  @media (prefers-reduced-motion:reduce){.calc .bar i{transition:none}}
+
+  .grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:13px;margin-top:15px}
+  .gitem{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:13px 15px}
+  .gitem code{font-family:var(--mono);font-size:.84rem;color:var(--accent);font-weight:600}
+  .gitem p{margin:5px 0 0;font-size:.855rem;color:var(--soft);max-width:none}
+
+  footer.end{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:.79rem;font-family:var(--mono)}
+
+  @media (max-width:900px){
+    .shell{grid-template-columns:1fr;padding:20px 14px 80px;gap:6px}
+    nav.toc{position:static;max-height:none;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:8px}
+  }
+
+  /* ---- print / save-as-PDF ---- */
+  @media print{
+    :root{--bg:#fff;--panel:#fff;--panel2:#f4f4f4;--ink:#000;--soft:#333;--faint:#555;--line:#bbb;
+          --cbg:#f6f6f6;--cink:#111;--ckey:#7a4d00;--cstr:#0a5c2a;--ccom:#555;--ctype:#12456b}
+    body{font-size:10.5pt}
+    .top,nav.toc{display:none !important}
+    .shell{display:block;max-width:100%;padding:0}
+    h2.part{page-break-before:always;page-break-after:avoid}
+    h2.part:first-of-type{page-break-before:avoid}
+    h3.sec,h4,article.file h3{page-break-after:avoid}
+    article.file,pre.c,table.t,.ask,.warn,.note,.calc{page-break-inside:avoid}
+    pre.c{border:1px solid #ccc;white-space:pre-wrap;word-break:break-word}
+    details.d{border:1px solid #ccc}
+    details.d .body{display:block !important}
+    a{color:#000;text-decoration:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <span class="b"><strong>Arcane Vault</strong> — Complete Documentation</span>
+  <span class="m">IT2814 · Lim Rui Yang Ryan · 252206Z · IT2508</span>
+</div>
+
+<div class="shell">
+<nav class="toc" aria-label="Contents">
+  <div class="grp">Part I — Running it</div>
+  <a href="#run">Quick start</a>
+  <a href="#stack">Tech stack &amp; architecture</a>
+  <a href="#schema-overview">Data model</a>
+  <a href="#marks">Marks map</a>
+
+  <div class="grp">Part II — Proposal</div>
+  <a href="#prop-name">Feature name</a>
+  <a href="#prop-purpose">Purpose</a>
+  <a href="#prop-func">Key functionalities</a>
+  <a href="#prop-ui">UI / API components</a>
+  <a href="#prop-complex">Complexity justification</a>
+
+  <div class="grp">Part III — Concepts</div>
+  <a href="#c-arch">Two projects</a>
+  <a href="#c-flow">A request end to end</a>
+  <a href="#c-schema">Schema &amp; EF Core</a>
+  <a href="#c-auth">Authentication</a>
+  <a href="#c-dto">Why DTOs</a>
+  <a href="#c-demand" class="star">The Demand Index ★</a>
+  <a href="#c-calc" class="star">Interactive calculator ★</a>
+  <a href="#c-search">Any-field search</a>
+  <a href="#c-apiclient">ApiClient</a>
+  <a href="#c-razor">Razor Pages lifecycle</a>
+  <a href="#c-bugs">Bugs found &amp; fixed</a>
+
+  <div class="grp">Part IV — Every file</div>
+  <a href="#f-api-program" class="mono">Api/Program.cs</a>
+  <a href="#f-api-models" class="mono">Api/Models/ ×5</a>
+  <a href="#f-api-ctx" class="mono">Api/AppDbContext.cs</a>
+  <a href="#f-api-seed" class="mono">Api/DbInitializer.cs</a>
+  <a href="#f-api-dtos" class="mono">Api/Dtos/ ×4</a>
+  <a href="#f-api-accounts" class="mono">AccountsController</a>
+  <a href="#f-api-cats" class="mono">CategoriesController</a>
+  <a href="#f-api-items" class="mono">CollectionItemsCtrl</a>
+  <a href="#f-api-insights" class="mono star">InsightsController ★</a>
+  <a href="#f-api-mig" class="mono">Api/Migrations/</a>
+  <a href="#f-web-program" class="mono">Web/Program.cs</a>
+  <a href="#f-web-apiclient" class="mono">Web/ApiClient.cs</a>
+  <a href="#f-web-models" class="mono">Web/Models/ ×4</a>
+  <a href="#f-web-shared" class="mono">Web/Shared views</a>
+  <a href="#f-web-account" class="mono">Pages/Account/</a>
+  <a href="#f-web-cats" class="mono">Pages/Categories/</a>
+  <a href="#f-web-items" class="mono">Pages/CollectionItems/</a>
+  <a href="#f-web-insights" class="mono star">Pages/Insights/ ★</a>
+  <a href="#f-web-js" class="mono star">wwwroot/js/insights.js ★</a>
+  <a href="#f-config" class="mono">Config files</a>
+
+  <div class="grp">Part V — The demo</div>
+  <a href="#demo-prep">Before you start</a>
+  <a href="#demo-run" class="star">The 12-step run ★</a>
+  <a href="#demo-pitch" class="star">Pitching the feature ★</a>
+  <a href="#demo-qa">Expected questions</a>
+  <a href="#demo-break">If something breaks</a>
+
+  <div class="grp">Part VI — Reference</div>
+  <a href="#syntax">C# syntax</a>
+  <a href="#cheat">One-page cheat sheet</a>
+</nav>
+
+<main>
+
+<div class="cover">
+  <div class="eb">Complete documentation · everything in one file</div>
+  <h1>Arcane Vault</h1>
+  <p class="sub">Collection-management prototype for a collectibles marketplace startup. ASP.NET Core Razor Pages + Web API + Entity Framework Core + SQLite.</p>
+  <dl>
+    <dt>Student</dt><dd>LIM RUI YANG RYAN</dd>
+    <dt>Admin No</dt><dd>252206Z</dd>
+    <dt>Tutorial</dt><dd>IT2508</dd>
+    <dt>Module</dt><dd>IT2814 eBusiness Application Development</dd>
+    <dt>Feature</dt><dd>Vault Insights — Collection Demand &amp; Market Signal Dashboard</dd>
+  </dl>
+</div>
+
+<p class="lede" style="margin-top:20px">This single file contains everything: how to run the solution, the feature proposal for your tutor, conceptual explanations, a file-by-file code reference, and the demo runbook. It works offline — <strong>Ctrl+F</strong> searches the whole thing, and <strong>Ctrl+P → Save as PDF</strong> produces a clean printable copy.</p>
+
+<!-- ================= PART I ================= -->
+<h2 class="part" id="run"><span class="n">Part I</span>Running the solution</h2>
+
+<h3 class="sec">Quick start</h3>
+<p><strong>Prerequisite:</strong> .NET 10 SDK. Check with <code class="inl">dotnet --list-sdks</code>.</p>
+<div class="warn"><strong>The API must start first.</strong> It owns the database and creates + seeds it on first run. If the web app starts alone you'll see "Could not reach the Arcane Vault API".</div>
+
+<h4>Option A — Visual Studio</h4>
+<ol>
+  <li>Open <code class="inl">ArcaneVault.sln</code></li>
+  <li>Right-click the <strong>solution</strong> → <strong>Configure Startup Projects…</strong></li>
+  <li>Choose <strong>Multiple startup projects</strong>, set both to <strong>Start</strong></li>
+  <li>Use the arrows so <code class="inl">ArcaneVault.Api</code> is listed <em>above</em> <code class="inl">ArcaneVault.Web</code></li>
+  <li>Press <strong>F5</strong></li>
+</ol>
+
+<h4>Option B — Two terminals</h4>
+<pre class="c"><span class="m"># Terminal 1 - wait for "Now listening on: http://localhost:5001"</span>
+cd ArcaneVault.Api
+dotnet run
+
+<span class="m"># Terminal 2</span>
+cd ArcaneVault.Web
+dotnet run</pre>
+
+<h4>Addresses and logins</h4>
+<div class="sx">
+<table class="t">
+  <thead><tr><th>What</th><th>URL</th></tr></thead>
+  <tbody>
+    <tr><td>Web app</td><td><code class="inl">http://localhost:5002</code></td></tr>
+    <tr><td>Swagger</td><td><code class="inl">http://localhost:5001/swagger</code></td></tr>
+  </tbody>
+</table>
+<table class="t">
+  <thead><tr><th>Role</th><th>Username</th><th>Password</th><th>Lands on</th></tr></thead>
+  <tbody>
+    <tr><td>Staff</td><td><code class="inl">staff</code></td><td><code class="inl">Staff@123</code></td><td>Vault Insights dashboard</td></tr>
+    <tr><td>Collector</td><td><code class="inl">collector</code></td><td><code class="inl">User@123</code></td><td>My Collection</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Seven more collector accounts exist (<code class="inl">cardmaster_lee</code>, <code class="inl">vault_amelia</code>, <code class="inl">retro_toys_sg</code>, <code class="inl">kaiju_ken</code>, <code class="inl">mintcondition</code>, <code class="inl">figure_hunter</code>, <code class="inl">tcg_tanya</code>) — all <code class="inl">User@123</code>.</p>
+
+<div class="note">
+  <div class="tag">Reset before demoing</div>
+  <p style="margin:0">Stop both apps, delete <code class="inl">ArcaneVault.Api/arcanevault.db*</code>, restart the API. It re-migrates and re-seeds automatically, so the data is pristine.</p>
+</div>
+
+<h3 class="sec" id="stack">Tech stack</h3>
+<div class="sx">
+<table class="t">
+  <thead><tr><th>Layer</th><th>Technology</th></tr></thead>
+  <tbody>
+    <tr><td>Web application</td><td>ASP.NET Core Razor Pages (.NET 10)</td></tr>
+    <tr><td>API</td><td>ASP.NET Core Web API (.NET 10)</td></tr>
+    <tr><td>Data access</td><td>Entity Framework Core 10</td></tr>
+    <tr><td>Database</td><td>SQLite (<code class="inl">arcanevault.db</code>)</td></tr>
+    <tr><td>UI</td><td>Bootstrap 5.3 + Bootstrap Icons (CDN)</td></tr>
+    <tr><td>Charts</td><td>Chart.js 4.4 (CDN)</td></tr>
+    <tr><td>Auth</td><td>Cookie authentication + PBKDF2 hashing</td></tr>
+    <tr><td>API docs</td><td>Swashbuckle / Swagger UI</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3 class="sec" id="schema-overview">Data model</h3>
+<pre class="c">ArcaneVaultUserRoles              ArcaneVaultUsers
+┌──────────────────┐             ┌────────────────────────┐
+│ RoleId      PK   │◀────────────│ UserName          PK   │
+│ RoleName         │      1    * │ Email        (unique)  │
+└──────────────────┘             │ IsDeleted              │
+                                 │ RoleId            FK   │
+                                 │ PasswordHash   (added) │
+                                 └───────────┬────────────┘
+                                             │ 1
+                                             │ *
+Categories                       CollectionItems
+┌──────────────────┐            ┌──────────────────────────┐
+│ CategoryCode PK  │            │ ItemId            PK     │
+│ CategoryName     │            │ ItemName                 │
+└────────┬─────────┘            │ IsDeleted                │
+         │ 1                    │ StartingQuantity         │
+         │ *                    │ CurrentQuantity          │
+  ┌──────▼───────────────────┐  │ UserName          FK     │
+  │ CollectionItemCategories │  │ CreatedAt      (added)   │
+  │ ItemId        PK, FK     │  │ LastUpdatedAt  (added)   │
+  │ CategoryCode  PK, FK     │◀─┴──────────┬───────────────┘
+  │  (composite primary key) │      1      │  *
+  └──────────────────────────┘─────────────┘</pre>
+
+<h3 class="sec" id="marks">Marks map</h3>
+<div class="sx">
+<table class="t">
+  <thead><tr><th>#</th><th>Requirement</th><th>Where</th></tr></thead>
+  <tbody>
+    <tr><td>1a</td><td>SQLite database file</td><td>Created by migration on first run</td></tr>
+    <tr><td>1b</td><td>5 tables + relationships</td><td><code class="inl">Api/Models/</code>, <code class="inl">Data/AppDbContext.cs</code></td></tr>
+    <tr><td>2a</td><td>EF Core connected to SQLite</td><td><code class="inl">Api/Program.cs</code> → <code class="inl">UseSqlite</code></td></tr>
+    <tr><td>2b</td><td>Entities generated</td><td><code class="inl">Api/Models/</code> ×5</td></tr>
+    <tr><td>3a–3c</td><td>Registration page, model, consuming API</td><td><code class="inl">Pages/Account/Register</code>, <code class="inl">Services/ApiClient.cs</code></td></tr>
+    <tr><td>3d</td><td>Registration API</td><td><code class="inl">AccountsController.Register</code></td></tr>
+    <tr><td>3e</td><td>Required / type / duplicate email</td><td>DataAnnotations + explicit checks + unique index</td></tr>
+    <tr><td>4a–4b</td><td>Navbar Login / Logout states</td><td><code class="inl">Shared/_Layout.cshtml</code></td></tr>
+    <tr><td>4c</td><td>Login page</td><td><code class="inl">Pages/Account/Login</code></td></tr>
+    <tr><td>4d</td><td>Performs authentication</td><td>API verifies hash; Web issues cookie</td></tr>
+    <tr><td>5a–5c</td><td>Category CRUD ×3 layers</td><td><code class="inl">Pages/Categories/</code>, <code class="inl">ApiClient</code>, <code class="inl">CategoriesController</code></td></tr>
+    <tr><td>6a</td><td>CollectionItem 5 pages</td><td><code class="inl">Pages/CollectionItems/</code></td></tr>
+    <tr><td>6b</td><td><strong>Search any field</strong></td><td><code class="inl">CollectionItemsController.GetAll</code></td></tr>
+    <tr><td>6c–6d</td><td>Consuming API + API</td><td><code class="inl">ApiClient</code>, <code class="inl">CollectionItemsController</code></td></tr>
+    <tr><td>7a</td><td>Category link only if Staff</td><td><code class="inl">_Layout.cshtml</code> + <code class="inl">StaffOnly</code> policy</td></tr>
+    <tr><td>7b</td><td>CollectionItem link</td><td><code class="inl">_Layout.cshtml</code></td></tr>
+    <tr><td>★</td><td><strong>Propose-a-Feature (20)</strong></td><td><code class="inl">InsightsController</code>, <code class="inl">Pages/Insights/</code>, <code class="inl">insights.js</code></td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ================= PART II ================= -->
+<h2 class="part" id="prop-name"><span class="n">Part II</span>Feature proposal (tutor submission)</h2>
+
+<h3 class="sec">1. Feature name</h3>
+<p><strong>Vault Insights — Collection Demand &amp; Market Signal Dashboard</strong></p>
+<p>A staff-only business analytics dashboard that measures which collectibles are actually moving between collections, and ranks them using a composite <strong>Demand Index</strong>.</p>
+
+<h3 class="sec" id="prop-purpose">2. Purpose</h3>
+<h4>The problem it solves</h4>
+<p>The assignment brief states that Arcane Vault's reason for building this prototype is to gather insight into:</p>
+<ul>
+  <li>Popular collectible items and collections</li>
+  <li>User activity and engagement</li>
+  <li>Market demand and collection trends</li>
+  <li>Overall interest within the collector community</li>
+</ul>
+<p>Without this feature the prototype <em>stores</em> that information but never surfaces it. Staff can see that data exists, but cannot answer the business question the company is actually asking: <strong>is there enough real trading appetite to justify building the full marketplace?</strong></p>
+
+<h4>The key insight</h4>
+<p>The required <code class="inl">CollectionItems</code> schema stores <strong>two</strong> quantity columns:</p>
+<div class="sx">
+<table class="t">
+  <thead><tr><th>Column</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><code class="inl">StartingQuantity</code></td><td>How many the collector originally acquired</td></tr>
+    <tr><td><code class="inl">CurrentQuantity</code></td><td>How many they still hold today</td></tr>
+  </tbody>
+</table>
+</div>
+<p>There is no reason to store both unless the <em>difference</em> matters. That difference is the only evidence anywhere in the prototype that a collectible has <strong>left a collection</strong> — traded, sold, or given away. Aggregated across every collector, it stops being an accounting detail and becomes a <strong>measurable demand signal</strong>.</p>
+
+<h4>Value added</h4>
+<ul>
+  <li>Converts passive collection records into a decision-making tool.</li>
+  <li>Directly answers all four bullets in the brief's Background section.</li>
+  <li>Gives Arcane Vault an evidence base for which collectible segments a future marketplace should launch with.</li>
+</ul>
+
+<h3 class="sec" id="prop-func">3. Key functionalities</h3>
+<h4>3.1 The Demand Index</h4>
+<div class="sx">
+<table class="t">
+  <thead><tr><th>#</th><th>Component</th><th class="n">Weight</th><th>Formula</th><th>Measures</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Turnover</td><td class="n">50%</td><td><code class="inl">(ΣStart − ΣCurr) / ΣStart × 100</code></td><td>Share that has moved on</td></tr>
+    <tr><td>2</td><td>Collector Reach</td><td class="n">30%</td><td><code class="inl">holders / maxHolders × 100</code></td><td>How widely held</td></tr>
+    <tr><td>3</td><td>Scarcity</td><td class="n">20%</td><td><code class="inl">(1 − ΣCurr / maxRemaining) × 100</code></td><td>How little is left</td></tr>
+  </tbody>
+</table>
+</div>
+<pre class="c">DemandIndex = Turnover×0.50 + ReachScore×0.30 + ScarcityScore×0.20</pre>
+<p><strong>Why these weights:</strong> turnover carries the most weight because units physically leaving collections is the most <em>direct</em> evidence of demand. Reach and scarcity are supporting context — high turnover on an item only one person owns is far weaker evidence than the same turnover across eight collectors.</p>
+<p><strong>Why normalise:</strong> the three components sit on incompatible natural scales ("held by 8 people" vs "72% turnover"). Normalising against the strongest item makes the weighted sum meaningful.</p>
+<div class="sx">
+<table class="t">
+  <thead><tr><th>Tier</th><th class="n">Index</th><th>Interpretation</th></tr></thead>
+  <tbody>
+    <tr><td><span class="pill hot">Hot</span></td><td class="n">≥ 60</td><td>Strong, active trading demand</td></tr>
+    <tr><td><span class="pill rising">Rising</span></td><td class="n">40–59</td><td>Building interest</td></tr>
+    <tr><td><span class="pill steady">Steady</span></td><td class="n">20–39</td><td>Stable, low movement</td></tr>
+    <tr><td><span class="pill dormant">Dormant</span></td><td class="n">&lt; 20</td><td>Sitting unused — promotion candidate</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4>3.2 Supporting functionality</h4>
+<div class="sx">
+<table class="t">
+  <thead><tr><th>Function</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Platform KPI row</td><td>Total collectors, active collectors (30 days), distinct collectibles, units held, units moved, overall turnover rate</td></tr>
+    <tr><td>Demand leaderboard</td><td>Ranked table with per-item component breakdown, progress bars, tier badges. Top 10 / 20 / All</td></tr>
+    <tr><td>Category popularity</td><td>Share of classified items per category, with distinct-collector reach</td></tr>
+    <tr><td>Activity trend</td><td>Items added and updated per month over a selectable 3 / 6 / 12-month window</td></tr>
+    <tr><td>Rule-based highlights</td><td>Plain-English observations generated from the figures, colour-coded by severity</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4>3.3 Rule-based insight generation</h4>
+<p>Rather than only presenting numbers, business rules produce actionable statements:</p>
+<ul>
+  <li><em>"One Piece Luffy Gear 5 Figure has the strongest demand signal at 80.1/100 — held by 8 collectors, with 75.0% of acquired units already moved on."</em></li>
+  <li><em>"4 of 24 collectibles are in the Hot tier, suggesting genuine trading appetite worth targeting in the marketplace build."</em></li>
+  <li><em>"4 collectibles show almost no movement, led by SG 50th Anniversary Coin Set. These are candidates for promotion or bundling."</em></li>
+</ul>
+
+<h3 class="sec" id="prop-ui">4. Expected UI / API components</h3>
+<div class="sx">
+<table class="t">
+  <thead><tr><th>UI component</th><th>Implementation</th></tr></thead>
+  <tbody>
+    <tr><td>KPI cards</td><td>Bootstrap grid, colour-coded by threshold</td></tr>
+    <tr><td>Demand leaderboard</td><td>Responsive Bootstrap table, progress bars, tier badges</td></tr>
+    <tr><td>Category popularity</td><td><strong>Chart.js</strong> doughnut with custom tooltips</td></tr>
+    <tr><td>Activity trend</td><td><strong>Chart.js</strong> filled line chart, dual series</td></tr>
+    <tr><td>Highlights panel</td><td>Bootstrap alerts keyed by severity</td></tr>
+    <tr><td>Controls</td><td>Top-N and month-window dropdowns, refresh — re-fetch without page reload</td></tr>
+    <tr><td>States</td><td>Empty states and per-panel error notices; one failing panel never breaks the page</td></tr>
+  </tbody>
+</table>
+<table class="t">
+  <thead><tr><th>API endpoint</th><th>Returns</th></tr></thead>
+  <tbody>
+    <tr><td><code class="inl">GET /api/insights/overview</code></td><td><code class="inl">VaultOverviewDto</code></td></tr>
+    <tr><td><code class="inl">GET /api/insights/demand?top=</code></td><td><code class="inl">DemandSignalDto[]</code></td></tr>
+    <tr><td><code class="inl">GET /api/insights/categories</code></td><td><code class="inl">CategoryPopularityDto[]</code></td></tr>
+    <tr><td><code class="inl">GET /api/insights/activity?months=</code></td><td><code class="inl">ActivityPointDto[]</code></td></tr>
+    <tr><td><code class="inl">GET /api/insights/highlights</code></td><td><code class="inl">InsightHighlightDto[]</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p><strong>Architecture note.</strong> The browser never calls the API directly. The dashboard's JavaScript fetches <em>same-origin</em> Razor Page handlers (<code class="inl">/Insights?handler=Demand</code>), which call the API server-side through a typed <code class="inl">HttpClient</code>. No CORS is required, the analytics endpoints inherit the page's <code class="inl">StaffOnly</code> policy, and the API's address never reaches the browser.</p>
+<p><strong>Schema changes.</strong> Two columns added to <code class="inl">CollectionItems</code> — <code class="inl">CreatedAt</code> and <code class="inl">LastUpdatedAt</code> — supporting the trend and engagement functionality. No specified column, key, or relationship on any of the five required tables was altered.</p>
+
+<h3 class="sec" id="prop-complex">5. Complexity justification</h3>
+<div class="sx">
+<table class="t">
+  <thead><tr><th>Rubric criterion for "Complex"</th><th>How Vault Insights meets it</th></tr></thead>
+  <tbody>
+    <tr><td>"significantly enhanced UI/UX and thoughtful design improvements"</td><td>Charts, progress-bar visualisations, tier badges, per-panel error isolation, empty states, live filter controls</td></tr>
+    <tr><td>"meaningful new functionalities beyond standard Visual Studio templates"</td><td>Nothing is scaffolded CRUD — it is an original derived metric with weighting and normalisation</td></tr>
+    <tr><td>"application of business analytics to generate actionable insights"</td><td>The Demand Index is a purpose-built composite metric; the rule engine turns it into written recommendations</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4>Questions for tutor feedback</h4>
+<ol>
+  <li>Is the three-component weighting (50/30/20) an appropriate level of analytical depth, or would you prefer a simpler or more sophisticated model?</li>
+  <li>Is grouping by <code class="inl">ItemName</code> an acceptable way to identify "the same collectible" across collectors, given the prototype schema has no shared catalogue table?</li>
+  <li>Would adding a second moderate feature strengthen the submission, or is one complex feature implemented thoroughly the better use of the remaining time?</li>
+</ol>
+
+<!-- ================= PART III ================= -->
+<h2 class="part" id="c-arch"><span class="n">Part III</span>How it works — the concepts</h2>
+<p class="lede">Read this to understand the system. Part IV explains individual files; this part explains why they're shaped the way they are.</p>
+
+<h3 class="sec">Two projects, one solution</h3>
+<div class="sx">
+<table class="t">
+  <thead><tr><th>Project</th><th>Type</th><th>Owns</th><th>Never does</th></tr></thead>
+  <tbody>
+    <tr><td><code class="inl">ArcaneVault.Api</code></td><td>Web API</td><td>EF Core, SQLite, entities, business rules</td><td>Render HTML</td></tr>
+    <tr><td><code class="inl">ArcaneVault.Web</code></td><td>Razor Pages</td><td>Pages, session cookie, UI</td><td>Touch the database — no DbContext at all</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="ask">
+  <span class="q">Why two projects instead of one?</span>
+  <p>The assignment grades a Razor Pages app and a Web API as separate deliverables, so separating them lets each be demonstrated on its own — Swagger proves the API stands alone. It also makes the boundary real rather than a convention: the web project has no <code class="inl">DbContext</code> reference, so it physically cannot bypass the API.</p>
+</div>
+
+<h3 class="sec" id="c-flow">A request, end to end</h3>
+<p>Take <em>"a collector searches their collection for 'Coins'"</em>:</p>
+<ol>
+  <li>Browser GETs <code class="inl">localhost:5002/CollectionItems?Search=Coins</code></li>
+  <li>Cookie middleware reads the auth cookie → the user is <code class="inl">collector</code>, role <code class="inl">User</code></li>
+  <li>Authorisation checks the folder rule — <code class="inl">/CollectionItems</code> needs any signed-in user ✓</li>
+  <li><code class="inl">IndexModel.OnGetAsync</code> runs; <code class="inl">Search</code> is already populated by model binding</li>
+  <li>It calls <code class="inl">_apiClient.GetCollectionItemsAsync(userName: User.Identity.Name, search: "Coins", …)</code></li>
+  <li><strong>ApiClient</strong> issues <code class="inl">GET localhost:5001/api/collectionitems?userName=collector&amp;search=Coins&amp;page=1&amp;pageSize=10</code></li>
+  <li><strong>API</strong> builds the LINQ query, EF translates to SQL, SQLite executes</li>
+  <li>Rows project into <code class="inl">CollectionItemDto</code> → JSON</li>
+  <li>ApiClient deserialises into the Web project's mirror DTO</li>
+  <li>Razor renders the table; the browser receives HTML</li>
+</ol>
+<div class="warn"><strong>The browser made exactly one request, to port 5002.</strong> The hop to 5001 happened server-side. That single fact answers the CORS question, the security question, and the architecture question at once.</div>
+
+<h3 class="sec" id="c-schema">Schema and EF Core configuration</h3>
+<h4>String primary keys</h4>
+<pre class="c">entity.HasKey(u =&gt; u.UserName);      <span class="m">// ArcaneVaultUsers</span>
+entity.HasKey(c =&gt; c.CategoryCode);  <span class="m">// Categories</span></pre>
+<p>EF's convention looks for <code class="inl">Id</code> or <code class="inl">&lt;Type&gt;Id</code>. Neither exists, so the key is declared explicitly. These are <strong>natural keys</strong> — the business value itself identifies the row. A consequence: because <code class="inl">CategoryCode</code> is the key and is referenced by join rows, it cannot be edited after creation.</p>
+
+<h4>The many-to-many with a composite key</h4>
+<pre class="c">modelBuilder.Entity&lt;<span class="t">CollectionItem</span>&gt;()
+    .HasMany(i =&gt; i.Categories)
+    .WithMany(c =&gt; c.CollectionItems)
+    .UsingEntity&lt;<span class="t">CollectionItemCategory</span>&gt;(
+        right =&gt; right.HasOne(cic =&gt; cic.Category)
+                      .WithMany(c =&gt; c.CollectionItemCategories)
+                      .HasForeignKey(cic =&gt; cic.CategoryCode)
+                      .OnDelete(<span class="t">DeleteBehavior</span>.Restrict),
+        left  =&gt; left.HasOne(cic =&gt; cic.CollectionItem)
+                     .WithMany(i =&gt; i.CollectionItemCategories)
+                     .HasForeignKey(cic =&gt; cic.ItemId)
+                     .OnDelete(<span class="t">DeleteBehavior</span>.Cascade),
+        join =&gt;
+        {
+            join.ToTable(<span class="s">"CollectionItemCategories"</span>);
+            join.HasKey(cic =&gt; <span class="k">new</span> { cic.ItemId, cic.CategoryCode });
+        });</pre>
+<p>Three lambdas: the <em>right</em> foreign key, the <em>left</em> foreign key, then the join table itself. The composite key satisfies the specified schema <em>and</em> makes attaching the same category twice structurally impossible.</p>
+<div class="ask">
+  <span class="q">Why Restrict on one side and Cascade on the other?</span>
+  <p>They guard different things. <strong>Cascade</strong> on the item side is correct — if an item is genuinely deleted, its category links are meaningless. <strong>Restrict</strong> on the category side prevents deleting a category that 24 items still use, which would silently strip classification from two dozen collectors' records.</p>
+</div>
+
+<h4>Soft delete vs hard delete</h4>
+<div class="sx">
+<table class="t">
+  <thead><tr><th>Entity</th><th>Delete style</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td>CollectionItem</td><td>Soft (<code class="inl">IsDeleted</code>)</td><td>Preserves the demand history behind the analytics</td></tr>
+    <tr><td>ArcaneVaultUser</td><td>Soft (<code class="inl">IsDeleted</code>)</td><td>Items still reference the owner via FK</td></tr>
+    <tr><td>Category</td><td>Hard</td><td>No <code class="inl">IsDeleted</code> in the specified schema — protected by Restrict instead</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3 class="sec" id="c-auth">Authentication, end to end</h3>
+<h4>The API owns passwords</h4>
+<pre class="c"><span class="m">// Registration</span>
+user.PasswordHash = _passwordHasher.HashPassword(user, input.Password);
+
+<span class="m">// Login</span>
+<span class="k">var</span> verification = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, input.Password);
+<span class="k">if</span> (verification == <span class="t">PasswordVerificationResult</span>.Failed)
+    <span class="k">return</span> Unauthorized(<span class="k">new</span> { message = failureMessage });</pre>
+<p><code class="inl">PasswordHasher&lt;T&gt;</code> is ASP.NET Core's built-in PBKDF2 implementation with a per-user random salt. It ships in the shared framework — no extra package.</p>
+<div class="note">
+  <div class="tag">A security detail worth raising unprompted</div>
+  <p style="margin:0">The login failure message is <em>identical</em> whether the username doesn't exist, the account is deactivated, or the password is wrong. Different messages would let an attacker enumerate valid usernames.</p>
+</div>
+
+<h4>The web app owns the session</h4>
+<pre class="c"><span class="k">var</span> claims = <span class="k">new</span> <span class="t">List</span>&lt;<span class="t">Claim</span>&gt;
+{
+    <span class="k">new</span>(<span class="t">ClaimTypes</span>.Name,  user.UserName),
+    <span class="k">new</span>(<span class="t">ClaimTypes</span>.Email, user.Email),
+    <span class="k">new</span>(<span class="t">ClaimTypes</span>.Role,  user.RoleName),   <span class="m">// ← drives all role checks</span>
+};
+
+<span class="k">await</span> HttpContext.SignInAsync(
+    <span class="t">CookieAuthenticationDefaults</span>.AuthenticationScheme,
+    <span class="k">new</span> <span class="t">ClaimsPrincipal</span>(<span class="k">new</span> <span class="t">ClaimsIdentity</span>(claims, <span class="t">CookieAuthenticationDefaults</span>.AuthenticationScheme)));</pre>
+<p>That single <strong>Role claim</strong> powers both <code class="inl">User.IsInRole("Staff")</code> in the navbar and the <code class="inl">StaffOnly</code> policy. It originates from the database and travels in a signed, encrypted cookie — the browser cannot forge it.</p>
+
+<h4>Authorisation declared by folder</h4>
+<pre class="c">options.Conventions.AuthorizeFolder(<span class="s">"/CollectionItems"</span>);           <span class="m">// any signed-in user</span>
+options.Conventions.AuthorizeFolder(<span class="s">"/Categories"</span>, <span class="s">"StaffOnly"</span>);   <span class="m">// administrators only</span>
+options.Conventions.AuthorizeFolder(<span class="s">"/Insights"</span>, <span class="s">"StaffOnly"</span>);</pre>
+<div class="warn"><strong>Defence in depth.</strong> Hiding the Categories link is a <em>usability</em> measure, not a security boundary. The real boundary is the policy: signing in as <code class="inl">collector</code> and typing <code class="inl">/Categories</code> still lands on Access Denied. Demo this — it's exactly what a tutor probes.</div>
+
+<h3 class="sec" id="c-dto">Why the API never returns an entity</h3>
+<ol>
+  <li><strong>Reference cycles.</strong> <code class="inl">CollectionItem.Categories</code> points at <code class="inl">Category</code> objects whose <code class="inl">CollectionItems</code> point back. Serialising that either throws a cycle exception or nests forever. A DTO is flat by construction, so the cycle never exists.</li>
+  <li><strong>Never leaking the hash.</strong> <code class="inl">ArcaneVaultUser</code> has a <code class="inl">PasswordHash</code> property. <code class="inl">UserDto</code> does not. Returning entities would ship every password hash to the browser.</li>
+</ol>
+<p>Read and write DTOs are separate types: <code class="inl">CollectionItemDto</code> carries display data (<code class="inl">CategoryNames</code>, <code class="inl">UnitsMoved</code>); <code class="inl">CollectionItemInputDto</code> carries only what a form submits (<code class="inl">CategoryCodes</code>). Mapping is hand-written LINQ <code class="inl">.Select(...)</code> — no AutoMapper, one fewer dependency.</p>
+
+<!-- ===== DEMAND INDEX ===== -->
+<h3 class="sec" id="c-demand">★ The Demand Index — the graded feature</h3>
+<p>The schema stores <strong>two</strong> quantity columns. There is no reason to store both unless the difference means something — and that difference is the only evidence in the whole system that a collectible has <em>left</em> a collection. Aggregated across collectors, it becomes a demand signal. That single observation is the entire feature.</p>
+
+<h4>The three components</h4>
+<div class="sx">
+<table class="t">
+  <thead><tr><th>Component</th><th class="n">Weight</th><th>Formula</th><th>Measures</th></tr></thead>
+  <tbody>
+    <tr><td>Turnover</td><td class="n">0.50</td><td><code class="inl">(ΣStart − ΣCurr) / ΣStart × 100</code></td><td>Share that has moved on</td></tr>
+    <tr><td>Reach</td><td class="n">0.30</td><td><code class="inl">holders / maxHolders × 100</code></td><td>How widely held</td></tr>
+    <tr><td>Scarcity</td><td class="n">0.20</td><td><code class="inl">(1 − ΣCurr / maxRemaining) × 100</code></td><td>How little is left</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4 id="c-calc">Try it — drag to see how the index responds</h4>
+<div class="calc">
+  <p class="hint">Baselines fixed at the seeded data's maxima: 8 holders, 15 units remaining — the same normalisation the real controller uses.</p>
+
+  <div class="row">
+    <label for="cStart">Total starting quantity <span class="sub">summed across all holders</span></label>
+    <span class="val" id="vStart">28</span>
+  </div>
+  <input type="range" id="cStart" min="1" max="60" value="28" aria-label="Total starting quantity" />
+
+  <div class="row">
+    <label for="cCurr">Total current quantity <span class="sub">what collectors still hold</span></label>
+    <span class="val" id="vCurr">7</span>
+  </div>
+  <input type="range" id="cCurr" min="0" max="60" value="7" aria-label="Total current quantity" />
+
+  <div class="row">
+    <label for="cHold">Collector reach <span class="sub">distinct holders (max 8)</span></label>
+    <span class="val" id="vHold">8</span>
+  </div>
+  <input type="range" id="cHold" min="1" max="8" value="8" aria-label="Collector reach" />
+
+  <div class="out">
+    <div class="comp"><span>Turnover ×0.50</span><span class="bar"><i id="bTurn" style="width:75%"></i></span><span class="n" id="nTurn">75.0</span></div>
+    <div class="comp"><span>Reach ×0.30</span><span class="bar"><i id="bReach" style="width:100%"></i></span><span class="n" id="nReach">100.0</span></div>
+    <div class="comp"><span>Scarcity ×0.20</span><span class="bar"><i id="bScar" style="width:53%"></i></span><span class="n" id="nScar">53.3</span></div>
+    <div class="final"><span class="score" id="score">78.2</span><span class="pill hot" id="tier">Hot</span></div>
+    <div class="formula" id="formula"></div>
+  </div>
+</div>
+
+<h4>The code</h4>
+<pre class="c"><span class="m">// Normalisation baselines - the strongest values present.</span>
+<span class="k">var</span> maxReach     = raw.Max(r =&gt; r.CollectorReach);
+<span class="k">var</span> maxRemaining = raw.Max(r =&gt; r.TotalCurrent);
+
+<span class="k">var</span> unitsMoved = r.TotalStarting - r.TotalCurrent;
+
+<span class="k">var</span> turnoverRate = r.TotalStarting == 0 ? 0m
+    : <span class="t">Math</span>.Round((<span class="k">decimal</span>)unitsMoved / r.TotalStarting * 100m, 1);
+
+<span class="k">var</span> reachScore = maxReach == 0 ? 0m
+    : <span class="t">Math</span>.Round((<span class="k">decimal</span>)r.CollectorReach / maxReach * 100m, 1);
+
+<span class="m">// Inverted - fewer units left scores higher.</span>
+<span class="k">var</span> scarcityScore = maxRemaining == 0 ? 100m
+    : <span class="t">Math</span>.Round((1m - (<span class="k">decimal</span>)r.TotalCurrent / maxRemaining) * 100m, 1);
+
+<span class="k">var</span> demandIndex = <span class="t">Math</span>.Round(
+      turnoverRate  * TurnoverWeight
+    + reachScore    * ReachWeight
+    + scarcityScore * ScarcityWeight, 1);</pre>
+<ul>
+  <li>Every division has a <strong>zero guard</strong> via the <code class="inl">? :</code> ternary.</li>
+  <li>The <code class="inl">(decimal)</code> casts force decimal division — without them <code class="inl">int / int</code> truncates and every rate comes out 0 or 1.</li>
+  <li><code class="inl">decimal</code> not <code class="inl">double</code>, because these are exact reported figures.</li>
+</ul>
+
+<h4>Worked example from the seeded data</h4>
+<div class="sx">
+<table class="t">
+  <thead><tr><th>Collectible</th><th class="n">Holders</th><th class="n">Moved</th><th class="n">Turnover</th><th class="n">Index</th><th>Tier</th></tr></thead>
+  <tbody>
+    <tr><td>One Piece Luffy Gear 5</td><td class="n">8</td><td class="n">21 / 28</td><td class="n">75.0%</td><td class="n"><strong>80.1</strong></td><td><span class="pill hot">Hot</span></td></tr>
+    <tr><td>Charizard Base Set Holo</td><td class="n">7</td><td class="n">29 / 37</td><td class="n">78.4%</td><td class="n"><strong>77.0</strong></td><td><span class="pill hot">Hot</span></td></tr>
+    <tr><td>Pokemon Red (Sealed)</td><td class="n">8</td><td class="n">28 / 39</td><td class="n">71.8%</td><td class="n"><strong>74.3</strong></td><td><span class="pill hot">Hot</span></td></tr>
+    <tr><td>DBZ Shenron Statue</td><td class="n">5</td><td class="n">15 / 26</td><td class="n">57.7%</td><td class="n"><strong>56.0</strong></td><td><span class="pill rising">Rising</span></td></tr>
+    <tr><td>Beatles Abbey Road</td><td class="n">3</td><td class="n">—</td><td class="n">—</td><td class="n"><strong>31.2</strong></td><td><span class="pill steady">Steady</span></td></tr>
+    <tr><td>Tamagotchi P1 Original</td><td class="n">1</td><td class="n">0 / 4</td><td class="n">0.0%</td><td class="n"><strong>11.7</strong></td><td><span class="pill dormant">Dormant</span></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="note">
+  <div class="tag">The row to talk about</div>
+  <p style="margin:0">Charizard has the <em>higher</em> turnover (78.4% vs 75.0%) but the <em>lower</em> index — it is held by one fewer collector, and reach is 30% of the score. That trade-off is the entire justification for a composite metric rather than sorting by turnover: a single number would have ranked them the other way round and told the business the wrong thing.</p>
+</div>
+
+<h4>From numbers to sentences</h4>
+<pre class="c"><span class="k">var</span> hotCount = signals.Count(s =&gt; s.Tier == <span class="s">"Hot"</span>);
+<span class="k">if</span> (hotCount &gt; 0)
+    highlights.Add(<span class="k">new</span> <span class="t">InsightHighlightDto</span> {
+        Message  = <span class="s">$"{hotCount} of {signals.Count} collectibles are in the Hot tier, "</span> +
+                   <span class="s">"suggesting genuine trading appetite worth targeting in the marketplace build."</span>,
+        Severity = <span class="s">"warning"</span>,
+    });</pre>
+<p>This is what makes it <em>analytics</em> rather than <em>reporting</em> — it doesn't just show what the data is, it says what the business should do about it.</p>
+
+<h3 class="sec" id="c-search">The any-field search <span class="marks">3 marks</span></h3>
+<pre class="c"><span class="k">var</span> pattern   = <span class="s">$"%{term}%"</span>;
+<span class="k">var</span> isNumeric = <span class="k">int</span>.TryParse(term, <span class="k">out</span> <span class="k">var</span> numericTerm);
+
+query = query.Where(i =&gt;
+       <span class="t">EF</span>.Functions.Like(i.ItemName, pattern)
+    || <span class="t">EF</span>.Functions.Like(i.UserName, pattern)
+    || i.CollectionItemCategories.Any(cic =&gt;
+              <span class="t">EF</span>.Functions.Like(cic.CategoryCode, pattern)
+           || <span class="t">EF</span>.Functions.Like(cic.Category.CategoryName, pattern))
+    || (isNumeric &amp;&amp; (i.ItemId           == numericTerm
+                   || i.StartingQuantity == numericTerm
+                   || i.CurrentQuantity  == numericTerm)));</pre>
+<ul>
+  <li><code class="inl">EF.Functions.Like</code> becomes a real SQL <code class="inl">LIKE</code> — filtering runs inside SQLite, not after loading every row.</li>
+  <li><code class="inl">isNumeric</code> short-circuits the integer comparisons, so <em>"Charizard"</em> never attempts a nonsensical numeric match.</li>
+  <li>The <code class="inl">.Any(...)</code> reaches through the join table into category code <em>and</em> name.</li>
+</ul>
+<p><strong>Demo:</strong> <code class="inl">gundam</code> → by name · <code class="inl">Coins</code> → by category · <code class="inl">47</code> → by ID.</p>
+
+<h3 class="sec" id="c-apiclient">ApiClient — the only door between the tiers</h3>
+<pre class="c">builder.Services.AddHttpClient&lt;<span class="t">ApiClient</span>&gt;(client =&gt;
+{
+    client.BaseAddress = <span class="k">new</span> <span class="t">Uri</span>(apiBaseUrl);   <span class="m">// http://localhost:5001</span>
+    client.Timeout     = <span class="t">TimeSpan</span>.FromSeconds(30);
+});</pre>
+<p><code class="inl">AddHttpClient&lt;T&gt;</code> registers a <em>typed client</em>: a pooled <code class="inl">HttpClient</code> managed by <code class="inl">IHttpClientFactory</code>, avoiding the socket exhaustion caused by <code class="inl">new HttpClient()</code> per request. HTTP not HTTPS deliberately — a server-to-server HTTPS call would have to validate the dev certificate, a common setup failure, and both processes are local.</p>
+<p>Every public method funnels through four private helpers, so failure handling is written exactly once. <code class="inl">ExtractErrorMessageAsync</code> handles <em>two</em> error shapes: the API's own <code class="inl">{ "message": … }</code>, and <code class="inl">[ApiController]</code>'s RFC 9110 problem document with an <code class="inl">errors</code> dictionary. A total network failure becomes <em>"Could not reach the Arcane Vault API…"</em> — exactly what a tutor sees if they start the projects in the wrong order.</p>
+
+<h3 class="sec" id="c-razor">Razor Pages lifecycle</h3>
+<h4>Query-string binding</h4>
+<pre class="c">[<span class="t">BindProperty</span>(SupportsGet = <span class="k">true</span>)]
+<span class="k">public</span> <span class="k">string</span>? Search { <span class="k">get</span>; <span class="k">set</span>; }</pre>
+<p>Plain <code class="inl">[BindProperty]</code> binds on POST only. <code class="inl">SupportsGet = true</code> makes it bind from the query string too, so <code class="inl">?Search=gundam&amp;PageNumber=2</code> populates the properties automatically — bookmarkable, with a working back button.</p>
+
+<h4>Checkbox arrays for the many-to-many</h4>
+<pre class="c">&lt;input type=<span class="s">"checkbox"</span> name=<span class="s">"Input.CategoryCodes"</span> value=<span class="s">"@option.Value"</span>
+       checked=<span class="s">"@(Model.Input.CategoryCodes.Contains(option.Value))"</span> /&gt;</pre>
+<p>Every checkbox shares one <code class="inl">name</code>, so the binder collects the ticked values into <code class="inl">string[] CategoryCodes</code>.</p>
+
+<h4>Post / Redirect / Get</h4>
+<ol>
+  <li><code class="inl">OnGetAsync</code> loads dropdowns and, on Edit, the record.</li>
+  <li><code class="inl">OnPostAsync</code> runs. If <code class="inl">!ModelState.IsValid</code> the page re-renders with input intact — options reloaded first, since they aren't posted.</li>
+  <li>An API rejection becomes <code class="inl">ModelState.AddModelError(string.Empty, ex.Message)</code> — a form-level error rendered by <code class="inl">asp-validation-summary="ModelOnly"</code>.</li>
+  <li>On success, <code class="inl">TempData["SuccessMessage"]</code> is set and the handler redirects. <code class="inl">TempData</code> survives exactly one redirect.</li>
+</ol>
+<p>That redirect stops a browser refresh from re-submitting the form.</p>
+
+<h3 class="sec" id="c-bugs">Bugs found and fixed</h3>
+<p class="lede">"Tell me about a problem you hit" is a near-certain question. These are all real.</p>
+
+<h4>1. SQLite cannot translate <code class="inl">Distinct().Count()</code> inside a <code class="inl">GroupBy</code></h4>
+<pre class="c">.GroupBy(i =&gt; i.ItemName)
+.Select(g =&gt; <span class="k">new</span> { CollectorReach = g.Select(i =&gt; i.UserName).Distinct().Count(), … })</pre>
+<p>Compiles fine, throws at runtime: <em>"Translating this query requires the SQL APPLY operation, which is not supported on SQLite."</em> Fixed by fetching four narrow columns and grouping with LINQ-to-Objects. On SQL Server the original would have worked.</p>
+
+<h4>2. <code class="inl">ActionResult&lt;T&gt;.Value</code> is null when you return <code class="inl">Ok(...)</code></h4>
+<p>The highlights endpoint reused two other endpoints by calling them and reading <code class="inl">.Value</code>. It silently produced nothing — <code class="inl">.Value</code> is only populated when an action returns <code class="inl">T</code> directly; wrapping in <code class="inl">Ok(...)</code> puts the payload in <code class="inl">.Result</code>. Two of the five insights never appeared, with no error. Fixed by extracting plain private methods both callers share.</p>
+
+<h4>3. Disabled inputs are not submitted by browsers</h4>
+<pre class="c">Input.CategoryCode = Code;
+ModelState.Remove(<span class="s">$"{nameof(Input)}.{nameof(Input.CategoryCode)}"</span>);</pre>
+<p>The Category Edit page shows the code in a <code class="inl">disabled</code> input. Browsers don't submit disabled fields, so binding recorded "required" against a field the user cannot see — and the <code class="inl">ModelOnly</code> summary never rendered it. The page silently redisplayed on save. Re-assigning isn't enough: ModelState already recorded the failure, so the stale entry must be removed.</p>
+
+<h4>4. Nullable reference types silently imply <code class="inl">[Required]</code></h4>
+<pre class="c">.AddMvcOptions(o =&gt; o.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = <span class="k">true</span>);</pre>
+<p>With <code class="inl">&lt;Nullable&gt;enable&lt;/Nullable&gt;</code>, MVC infers <code class="inl">[Required]</code> for every non-nullable reference-type property. That broke <code class="inl">UserName</code> (set server-side, never posted) and <code class="inl">CategoryCodes</code> (empty when no categories ticked).</p>
+
+<h4>5. A seeded timestamp could land in the future</h4>
+<pre class="c"><span class="m">// before: Rng.Next(1, Math.Max(daysAgo, 2)) → AddDays(1) when daysAgo == 0</span>
+LastUpdatedAt = createdAt.AddDays(Rng.Next(0, daysAgo + 1))</pre>
+<p>An item generated as "added today" received a <em>last updated</em> date of tomorrow — visible on the details page. Caught by checking the live data rather than trusting the code.</p>
+
+<!-- ================= PART IV ================= -->
+<h2 class="part" id="f-api-program"><span class="n">Part IV</span>Every file, explained</h2>
+<p class="lede">Files in presentation order. Each entry: what it does, the code that matters, and the question most likely to come back at you.</p>
+
+<article class="file">
+  <h3>ArcaneVault.Api/Program.cs</h3>
+  <p class="role">Wires up services, migrates and seeds the database, defines the HTTP pipeline.</p>
+  <pre class="c">builder.Services.AddDbContext&lt;<span class="t">AppDbContext</span>&gt;(options =&gt;
+    options.UseSqlite(builder.Configuration.GetConnectionString(<span class="s">"DefaultConnection"</span>)));
+
+builder.Services.AddSingleton&lt;<span class="t">IPasswordHasher</span>&lt;<span class="t">ArcaneVaultUser</span>&gt;, <span class="t">PasswordHasher</span>&lt;<span class="t">ArcaneVaultUser</span>&gt;&gt;();</pre>
+  <p><code class="inl">AddDbContext</code> registers the context as <strong>scoped</strong> — one instance per HTTP request, the right lifetime for a unit of work. The hasher is a <strong>singleton</strong> because it holds no state.</p>
+  <pre class="c"><span class="k">using</span> (<span class="k">var</span> scope = app.Services.CreateScope())
+{
+    <span class="k">var</span> db = scope.ServiceProvider.GetRequiredService&lt;<span class="t">AppDbContext</span>&gt;();
+    db.Database.Migrate();
+    <span class="t">DbInitializer</span>.Seed(db, hasher);
+}</pre>
+  <ul>
+    <li><code class="inl">CreateScope()</code> is required — the context is scoped and there's no request in progress at startup.</li>
+    <li><code class="inl">Migrate()</code> creates the file and applies pending migrations, so the tutor never runs an EF command.</li>
+    <li><code class="inl">Seed</code> only populates an <em>empty</em> database.</li>
+  </ul>
+  <div class="ask">
+    <span class="q">Why <code class="inl">Migrate()</code> rather than <code class="inl">EnsureCreated()</code>?</span>
+    <p><code class="inl">EnsureCreated</code> builds the schema from the model and ignores migrations entirely — you can never evolve the schema afterwards. <code class="inl">Migrate</code> applies the migration history, which is what the assignment asks for.</p>
+  </div>
+</article>
+
+<article class="file" id="f-api-models">
+  <h3>ArcaneVault.Api/Models/ — five entity classes <span class="marks">10 marks</span></h3>
+  <p class="role">Plain C# classes mapping one-to-one onto the five required tables.</p>
+  <div class="sx">
+  <table class="t">
+    <thead><tr><th>File</th><th>Table</th><th>Key</th></tr></thead>
+    <tbody>
+      <tr><td><code class="inl">ArcaneVaultUserRole.cs</code></td><td>ArcaneVaultUserRoles</td><td><code class="inl">RoleId</code> (int)</td></tr>
+      <tr><td><code class="inl">ArcaneVaultUser.cs</code></td><td>ArcaneVaultUsers</td><td><code class="inl">UserName</code> (string)</td></tr>
+      <tr><td><code class="inl">Category.cs</code></td><td>Categories</td><td><code class="inl">CategoryCode</code> (string)</td></tr>
+      <tr><td><code class="inl">CollectionItem.cs</code></td><td>CollectionItems</td><td><code class="inl">ItemId</code> (int, identity)</td></tr>
+      <tr><td><code class="inl">CollectionItemCategory.cs</code></td><td>CollectionItemCategories</td><td><code class="inl">(ItemId, CategoryCode)</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <pre class="c"><span class="k">public</span> <span class="k">string</span> CategoryCode { <span class="k">get</span>; <span class="k">set</span>; } = <span class="k">string</span>.Empty;
+<span class="k">public</span> <span class="t">ICollection</span>&lt;<span class="t">CollectionItem</span>&gt; CollectionItems { <span class="k">get</span>; <span class="k">set</span>; } = <span class="k">new</span> <span class="t">List</span>&lt;<span class="t">CollectionItem</span>&gt;();
+<span class="k">public</span> <span class="t">ArcaneVaultUser</span> User { <span class="k">get</span>; <span class="k">set</span>; } = <span class="k">null</span>!;</pre>
+  <p>Initialisers exist because nullable reference types are enabled. Navigation properties EF <em>guarantees</em> to fill use <code class="inl">= null!</code> — "trust me, EF populates this".</p>
+  <div class="ask">
+    <span class="q">Isn't adding columns against the brief?</span>
+    <p>No — the Propose-a-Feature section explicitly permits adding tables or columns. What matters is that no <em>specified</em> column, key, or relationship was altered. <code class="inl">PasswordHash</code> is a necessity (login is required and impossible without a stored credential); <code class="inl">CreatedAt</code> / <code class="inl">LastUpdatedAt</code> support the feature's trend and engagement metrics.</p>
+  </div>
+</article>
+
+<article class="file" id="f-api-ctx">
+  <h3>ArcaneVault.Api/Data/AppDbContext.cs</h3>
+  <p class="role">DbSets plus all key, index and relationship configuration.</p>
+  <pre class="c"><span class="k">public</span> <span class="t">DbSet</span>&lt;<span class="t">Category</span>&gt; Categories =&gt; Set&lt;<span class="t">Category</span>&gt;();</pre>
+  <p>The expression-bodied form avoids a nullable warning, since the property is computed rather than assigned.</p>
+  <pre class="c">entity.Property(r =&gt; r.RoleId).ValueGeneratedNever();</pre>
+  <p>Without this SQLite would auto-increment <code class="inl">RoleId</code> and ignore the seeder's values. <code class="inl">RoleIds.User = 1</code> and <code class="inl">RoleIds.Staff = 2</code> are referenced as constants, so they must be exactly those numbers.</p>
+  <pre class="c">entity.HasIndex(u =&gt; u.Email).IsUnique();</pre>
+  <div class="ask">
+    <span class="q">You already check for duplicate emails in the controller — why also index it?</span>
+    <p>The check is for the <em>message</em>; the index is for <em>correctness</em>. Two registrations arriving simultaneously could both pass the <code class="inl">AnyAsync</code> check before either saves. The index is the only thing that holds under concurrency.</p>
+  </div>
+  <div class="warn"><strong>Know this distinction:</strong> the <em>skip navigation</em> (<code class="inl">item.Categories</code>) is the convenient way to <em>read</em> categories. The <em>explicit join entity</em> (<code class="inl">item.CollectionItemCategories</code>) is what the <em>write</em> path manipulates, because it carries the composite key. Both exist deliberately.</div>
+</article>
+
+<article class="file" id="f-api-seed">
+  <h3>ArcaneVault.Api/Data/DbInitializer.cs</h3>
+  <p class="role">Populates an empty database with demo data, using dates relative to today.</p>
+  <pre class="c"><span class="k">if</span> (db.ArcaneVaultUserRoles.Any()) { <span class="k">return</span>; }        <span class="m">// only ever seed empty</span>
+<span class="k">private</span> <span class="k">static</span> <span class="k">readonly</span> <span class="t">Random</span> Rng = <span class="k">new</span>(252206);        <span class="m">// reproducible amounts</span></pre>
+  <p>A fixed seed means the leaderboard looks identical on every machine. Dates still shift with <code class="inl">DateTime.Today</code>, so the data never looks stale.</p>
+  <pre class="c"><span class="k">private</span> <span class="k">static</span> (…) TierProfile(<span class="t">DemandTier</span> tier) =&gt; tier <span class="k">switch</span>
+{
+    <span class="t">DemandTier</span>.Hot    =&gt; (6, 8, 0.15, 0.35),   <span class="m">// widely held, most units gone</span>
+    <span class="t">DemandTier</span>.Warm   =&gt; (4, 6, 0.40, 0.60),
+    <span class="t">DemandTier</span>.Medium =&gt; (2, 4, 0.65, 0.85),
+    _                  =&gt; (1, 2, 0.92, 1.00),   <span class="m">// barely traded</span>
+};</pre>
+  <p><strong>Retention</strong> is the share still held. Low retention ⇒ high turnover ⇒ high Demand Index. Each of 24 catalogue entries carries a tier, so the leaderboard reliably spans Hot → Dormant instead of clustering.</p>
+  <pre class="c"><span class="k">var</span> daysAgo   = (<span class="k">int</span>)<span class="t">Math</span>.Round(<span class="t">Math</span>.Pow(Rng.NextDouble(), 1.6) * 180);
+<span class="k">var</span> createdAt = today.AddDays(-daysAgo);</pre>
+  <p><code class="inl">Math.Pow(x, 1.6)</code> skews toward recent dates, so the activity chart shows growth rather than a flat line.</p>
+</article>
+
+<article class="file" id="f-api-dtos">
+  <h3>ArcaneVault.Api/Dtos/ — four files</h3>
+  <p class="role">The shapes the API accepts and returns. Entities never cross the wire.</p>
+  <div class="sx">
+  <table class="t">
+    <thead><tr><th>File</th><th>Contains</th></tr></thead>
+    <tbody>
+      <tr><td><code class="inl">AccountDtos.cs</code></td><td><code class="inl">RegisterInputDto</code>, <code class="inl">LoginInputDto</code>, <code class="inl">UserDto</code></td></tr>
+      <tr><td><code class="inl">CategoryDtos.cs</code></td><td><code class="inl">CategoryDto</code>, <code class="inl">CategoryInputDto</code></td></tr>
+      <tr><td><code class="inl">CollectionItemDtos.cs</code></td><td><code class="inl">CollectionItemDto</code>, <code class="inl">CollectionItemInputDto</code>, <code class="inl">PagedResult&lt;T&gt;</code></td></tr>
+      <tr><td><code class="inl">InsightsDtos.cs</code></td><td>Five analytics DTOs</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <pre class="c"><span class="k">public</span> <span class="k">int</span> UnitsMoved =&gt; StartingQuantity - CurrentQuantity;   <span class="m">// computed, not stored</span></pre>
+</article>
+
+<article class="file" id="f-api-accounts">
+  <h3>Controllers/AccountsController.cs <span class="marks">3d, 3e, 4d</span></h3>
+  <p class="role">Registration and credential verification — the only class that touches a password.</p>
+  <pre class="c"><span class="m">// (1) Required + (2) correct type are automatic via [ApiController] reading</span>
+<span class="m">//     DataAnnotations. If they fail, this method never runs.</span>
+<span class="m">// (3) Duplicates are business rules, checked here:</span>
+<span class="k">if</span> (<span class="k">await</span> _db.ArcaneVaultUsers.AnyAsync(u =&gt; u.Email == input.Email))
+    <span class="k">return</span> BadRequest(<span class="k">new</span> { message = <span class="s">$"An account already exists for '{input.Email}'."</span> });</pre>
+  <pre class="c">RoleId = <span class="t">RoleIds</span>.User,   <span class="m">// self-registration can never create Staff</span></pre>
+  <pre class="c"><span class="k">if</span> (verification == <span class="t">PasswordVerificationResult</span>.SuccessRehashNeeded)
+{
+    user.PasswordHash = _passwordHasher.HashPassword(user, input.Password);
+    <span class="k">await</span> _db.SaveChangesAsync();
+}</pre>
+  <p>If ASP.NET Core later strengthens its hashing parameters, this transparently upgrades the stored hash on the next successful login — the one moment the plain-text password is legitimately available.</p>
+</article>
+
+<article class="file" id="f-api-cats">
+  <h3>Controllers/CategoriesController.cs <span class="marks">5c — 5 marks</span></h3>
+  <p class="role">Full CRUD over the platform's master category list.</p>
+  <pre class="c">ItemCount = c.CollectionItemCategories.Count(cic =&gt; !cic.CollectionItem.IsDeleted),</pre>
+  <p>Inside the projection, so EF translates it to a SQL sub-select — no join rows are materialised just to be counted.</p>
+  <pre class="c"><span class="k">var</span> code = input.CategoryCode.Trim().ToUpperInvariant();</pre>
+  <p>Prevents <code class="inl">"tcg"</code> and <code class="inl">"TCG"</code> both existing as keys. <code class="inl">ToUpperInvariant</code> so the result never depends on server culture.</p>
+  <pre class="c"><span class="k">var</span> inUseCount = <span class="k">await</span> _db.CollectionItemCategories.CountAsync(cic =&gt; cic.CategoryCode == categoryCode);
+<span class="k">if</span> (inUseCount &gt; 0)
+    <span class="k">return</span> BadRequest(<span class="k">new</span> { message = <span class="s">$"Cannot delete '{category.CategoryName}' because {inUseCount} collection item(s) still use it…"</span> });</pre>
+  <div class="ask">
+    <span class="q">The foreign key is already Restrict — why check in code too?</span>
+    <p>The FK is the guarantee; the check is the <em>user experience</em>. Without it SQLite throws <code class="inl">Error 19: FOREIGN KEY constraint failed</code>, surfacing as a 500 that tells the administrator nothing. Checking first turns it into a 400 with a sentence explaining what to do.</p>
+  </div>
+</article>
+
+<article class="file" id="f-api-items">
+  <h3>Controllers/CollectionItemsController.cs <span class="marks">6b, 6d — 8 marks</span></h3>
+  <p class="role">Item CRUD plus the cross-field search.</p>
+  <pre class="c"><span class="k">private</span> <span class="k">static</span> <span class="t">IQueryable</span>&lt;<span class="t">CollectionItemDto</span>&gt; ProjectToDto(<span class="t">IQueryable</span>&lt;<span class="t">CollectionItem</span>&gt; query) =&gt;
+    query.Select(i =&gt; <span class="k">new</span> <span class="t">CollectionItemDto</span> { … });</pre>
+  <p>Takes and returns <code class="inl">IQueryable</code>, so it composes with filtering and paging <em>before</em> execution. List, details and create all reuse it, so their shapes can't drift.</p>
+  <pre class="c"><span class="k">var</span> totalCount = <span class="k">await</span> query.CountAsync();      <span class="m">// count BEFORE paging</span>
+<span class="k">var</span> items = <span class="k">await</span> ProjectToDto(query.OrderByDescending(i =&gt; i.LastUpdatedAt)…)
+    .Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();</pre>
+  <p>Two queries — one for the total so the UI can render page links, one for the slice. <code class="inl">OrderBy</code> is mandatory: <code class="inl">Skip</code>/<code class="inl">Take</code> on an unordered set is undefined.</p>
+  <pre class="c">item.CollectionItemCategories.Clear();
+<span class="k">foreach</span> (<span class="k">var</span> code <span class="k">in</span> input.CategoryCodes.Distinct())
+    item.CollectionItemCategories.Add(<span class="k">new</span> <span class="t">CollectionItemCategory</span> { ItemId = item.ItemId, CategoryCode = code });</pre>
+  <p>Clear-and-re-add rather than diffing. EF's change tracker sees removed join rows as orphans and deletes them. <em>Verified</em>: removing a category really does delete the row.</p>
+  <pre class="c">item.IsDeleted = <span class="k">true</span>;   <span class="m">// soft delete - nothing is destroyed</span></pre>
+</article>
+
+<article class="file starred" id="f-api-insights">
+  <h3>Controllers/InsightsController.cs ★ <span class="marks">20 marks</span></h3>
+  <p class="role">The graded feature. Five endpoints, all aggregating server-side.</p>
+  <pre class="c"><span class="k">private</span> <span class="k">const</span> <span class="k">decimal</span> TurnoverWeight = 0.50m;
+<span class="k">private</span> <span class="k">const</span> <span class="k">decimal</span> ReachWeight    = 0.30m;
+<span class="k">private</span> <span class="k">const</span> <span class="k">decimal</span> ScarcityWeight = 0.20m;</pre>
+  <p>Named constants rather than literals buried in arithmetic — they're a tunable business decision, and it shows.</p>
+  <pre class="c"><span class="k">var</span> rows = <span class="k">await</span> _db.CollectionItems
+    .Where(i =&gt; !i.IsDeleted)
+    .Select(i =&gt; <span class="k">new</span> { i.ItemName, i.UserName, i.StartingQuantity, i.CurrentQuantity })
+    .ToListAsync();
+
+<span class="k">var</span> aggregates = rows
+    .GroupBy(r =&gt; r.ItemName)
+    .Select(g =&gt; <span class="k">new</span>
+    {
+        ItemName       = g.Key,
+        CollectorReach = g.Select(r =&gt; r.UserName).Distinct().Count(),
+        TotalStarting  = g.Sum(r =&gt; r.StartingQuantity),
+        TotalCurrent   = g.Sum(r =&gt; r.CurrentQuantity),
+    })
+    .ToList();</pre>
+  <div class="ask">
+    <span class="q">Why group in memory instead of the database?</span>
+    <p>Not a shortcut — a hard limitation. Counting DISTINCT owners <em>inside</em> a <code class="inl">GroupBy</code> translates to a SQL APPLY, which the SQLite provider cannot express and throws on at runtime. At 86 rows the in-memory cost is irrelevant. On SQL Server the original version would have worked.</p>
+  </div>
+  <div class="ask">
+    <span class="q">Why group by <code class="inl">ItemName</code>?</span>
+    <p>Each collector's holding is its own row — two people owning the same card produce two records sharing a name. The prototype schema has no shared catalogue table, so name is the only thing identifying "the same collectible" across collectors. In a real build I'd add a master <code class="inl">Collectibles</code> table and group by its key.</p>
+  </div>
+  <pre class="c"><span class="k">private</span> <span class="k">static</span> <span class="k">string</span> ClassifyTier(<span class="k">decimal</span> demandIndex) =&gt; demandIndex <span class="k">switch</span>
+{
+    &gt;= 60m =&gt; <span class="s">"Hot"</span>, &gt;= 40m =&gt; <span class="s">"Rising"</span>, &gt;= 20m =&gt; <span class="s">"Steady"</span>, _ =&gt; <span class="s">"Dormant"</span>,
+};</pre>
+  <p>A switch expression with relational patterns, evaluated top to bottom.</p>
+  <pre class="c"><span class="k">for</span> (<span class="k">var</span> cursor = firstMonth; cursor &lt;= today; cursor = cursor.AddMonths(1)) { … }</pre>
+  <p>Grouping alone would <em>skip</em> months with no activity and the chart would jump the gap. Walking every month guarantees a continuous line.</p>
+  <pre class="c"><span class="k">public</span> <span class="k">async</span> <span class="t">Task</span>&lt;<span class="t">ActionResult</span>&lt;<span class="t">VaultOverviewDto</span>&gt;&gt; GetOverview() =&gt; Ok(<span class="k">await</span> ComputeOverviewAsync());
+<span class="k">private</span> <span class="k">async</span> <span class="t">Task</span>&lt;<span class="t">VaultOverviewDto</span>&gt; ComputeOverviewAsync() { … }</pre>
+  <div class="warn"><strong>Bug worth telling:</strong> <code class="inl">GetHighlights</code> originally called the other actions and read <code class="inl">.Value</code> — which is <strong>null</strong> when an action wraps its payload in <code class="inl">Ok(...)</code>. Two of the five insights silently never appeared. Fixed by extracting plain private methods both callers share.</div>
+</article>
+
+<article class="file" id="f-api-mig">
+  <h3>ArcaneVault.Api/Migrations/</h3>
+  <p class="role">EF-generated schema history. You didn't hand-write these — say so.</p>
+  <ul>
+    <li><code class="inl">…_InitialCreate.cs</code> — <code class="inl">Up()</code> creates tables, <code class="inl">Down()</code> drops them</li>
+    <li><code class="inl">…_InitialCreate.Designer.cs</code> — model snapshot at that migration</li>
+    <li><code class="inl">AppDbContextModelSnapshot.cs</code> — current model; EF diffs against this to generate the <em>next</em> migration</li>
+  </ul>
+  <pre class="c">CONSTRAINT <span class="s">"PK_CollectionItemCategories"</span> PRIMARY KEY (<span class="s">"ItemId"</span>, <span class="s">"CategoryCode"</span>)</pre>
+  <p>Worth pointing at — it proves the composite key landed in the real schema.</p>
+</article>
+
+<article class="file" id="f-web-program">
+  <h3>ArcaneVault.Web/Program.cs <span class="marks">4d, 7a</span></h3>
+  <p class="role">Authorisation policy, folder rules, cookie authentication, typed HttpClient.</p>
+  <pre class="c">options.AddPolicy(<span class="s">"StaffOnly"</span>, policy =&gt; policy.RequireRole(<span class="s">"Staff"</span>));
+
+options.Conventions.AuthorizeFolder(<span class="s">"/CollectionItems"</span>);
+options.Conventions.AuthorizeFolder(<span class="s">"/Categories"</span>, <span class="s">"StaffOnly"</span>);
+options.Conventions.AuthorizeFolder(<span class="s">"/Insights"</span>, <span class="s">"StaffOnly"</span>);</pre>
+  <div class="ask">
+    <span class="q">Why here instead of <code class="inl">[Authorize]</code> on each PageModel?</span>
+    <p>A new page inside a protected folder is <strong>secure by default</strong> — you cannot forget the attribute. It also puts every access rule in one readable place.</p>
+  </div>
+  <pre class="c">app.UseAuthentication();   <span class="m">// establishes WHO you are</span>
+app.UseAuthorization();    <span class="m">// decides WHAT you may reach</span></pre>
+  <div class="ask">
+    <span class="q">What breaks if you swap those two lines?</span>
+    <p>Authorisation runs before any identity exists, so every user looks anonymous and every protected page redirects to login — including for signed-in staff. A classic ordering bug.</p>
+  </div>
+</article>
+
+<article class="file" id="f-web-apiclient">
+  <h3>ArcaneVault.Web/Services/ApiClient.cs <span class="marks">3c, 5b, 6c — 11 marks</span></h3>
+  <p class="role">The only class in the web project that performs HTTP.</p>
+  <pre class="c"><span class="k">private</span> <span class="k">static</span> <span class="k">readonly</span> <span class="t">JsonSerializerOptions</span> JsonOptions = <span class="k">new</span>
+{
+    PropertyNameCaseInsensitive = <span class="k">true</span>,
+};</pre>
+  <p>The API emits camelCase (<code class="inl">categoryName</code>); the DTOs are PascalCase. Without this every property would silently deserialise as null.</p>
+  <pre class="c"><span class="k">var</span> pairs = parameters
+    .Where(p =&gt; !<span class="k">string</span>.IsNullOrWhiteSpace(p.Value))
+    .Select(p =&gt; <span class="s">$"{Uri.EscapeDataString(p.Key)}={Uri.EscapeDataString(p.Value!)}"</span>);</pre>
+  <p>Skips empty parameters so unused filters don't clutter the URL, and escapes values so searching <code class="inl">"R&amp;B"</code> doesn't break the query string.</p>
+  <p><strong><code class="inl">ApiClientException</code></strong> carries a nullable <code class="inl">StatusCode</code> (null when the request never completed) and an <code class="inl">IsNotFound</code> helper the details pages use to redirect gracefully.</p>
+</article>
+
+<article class="file" id="f-web-models">
+  <h3>ArcaneVault.Web/Models/ — four files</h3>
+  <p class="role">Mirrors of the API's DTOs, so JSON deserialises into strongly-typed objects.</p>
+  <div class="ask">
+    <span class="q">Why duplicate the DTOs instead of sharing a class library?</span>
+    <p>It keeps the projects genuinely independent — the web app depends on the API's <em>JSON contract</em>, not its assembly, exactly as you'd consume a third-party API. Neither project references the other. The trade-off is duplication, acceptable at this size.</p>
+  </div>
+  <p>They aren't identical copies — the Web versions carry UI concerns: <code class="inl">[Display(Name = …)]</code> for labels, and a <code class="inl">ConfirmPassword</code> field with <code class="inl">[Compare]</code> that exists <em>only</em> in the web project (<code class="inl">RegisterAsync</code> deliberately posts without it).</p>
+</article>
+
+<article class="file" id="f-web-shared">
+  <h3>Pages/Shared/_Layout.cshtml + _ViewImports + _ViewStart <span class="marks">4a, 4b, 7 — 7 marks</span></h3>
+  <p class="role">The shell every page renders inside, including the role-aware navbar.</p>
+  <pre class="c">@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers</pre>
+  <p>Without that line in <code class="inl">_ViewImports.cshtml</code>, <strong>every tag helper silently stops working</strong> — <code class="inl">asp-for</code> renders as an unknown attribute and forms break with no error.</p>
+  <pre class="c">@<span class="k">if</span> (User.Identity?.IsAuthenticated == <span class="k">true</span>)
+{
+    &lt;form method=<span class="s">"post"</span> asp-page=<span class="s">"/Account/Logout"</span>&gt;&lt;button&gt;Logout&lt;/button&gt;&lt;/form&gt;
+}
+<span class="k">else</span> { &lt;a asp-page=<span class="s">"/Account/Login"</span>&gt;Login&lt;/a&gt; }
+
+@<span class="k">if</span> (User.IsInRole(<span class="s">"Staff"</span>)) { &lt;a asp-page=<span class="s">"/Categories/Index"</span>&gt;Categories&lt;/a&gt; }</pre>
+  <div class="ask">
+    <span class="q">Why is Logout a form rather than a link?</span>
+    <p>So it's a POST. A GET logout can be triggered by anything that fetches a URL — a prefetch, an <code class="inl">&lt;img&gt;</code> on another site. Requiring POST makes it deliberate.</p>
+  </div>
+  <pre class="c">@<span class="k">if</span> (TempData[<span class="s">"SuccessMessage"</span>] <span class="k">is</span> <span class="k">string</span> successMessage) { … }</pre>
+  <p><code class="inl">is string successMessage</code> checks the type <em>and</em> assigns in one expression.</p>
+</article>
+
+<article class="file" id="f-web-account">
+  <h3>Pages/Account/ — Register, Login, Logout, AccessDenied <span class="marks">3a–3c, 4b, 4c — 10 marks</span></h3>
+  <pre class="c">[<span class="t">BindProperty</span>]
+<span class="k">public</span> <span class="t">RegisterInputDto</span> Input { <span class="k">get</span>; <span class="k">set</span>; } = <span class="k">new</span>();</pre>
+  <p>The property is named <code class="inl">Input</code>, so fields render as <code class="inl">Input.UserName</code> — which is why validation keys look like <code class="inl">"Input.CategoryCode"</code> elsewhere.</p>
+  <div class="ask">
+    <span class="q">Three validation layers — isn't that redundant?</span>
+    <p>Each catches something the others can't. The <strong>browser</strong> gives instant feedback but is trivially bypassed. The <strong>PageModel</strong> catches anything reaching the server. The <strong>API</strong> owns rules the web tier can't see — it's the only tier that can check whether an email is taken.</p>
+  </div>
+  <pre class="c"><span class="k">if</span> (!<span class="k">string</span>.IsNullOrEmpty(ReturnUrl) &amp;&amp; Url.IsLocalUrl(ReturnUrl))
+    <span class="k">return</span> LocalRedirect(ReturnUrl);</pre>
+  <div class="ask">
+    <span class="q">What does <code class="inl">IsLocalUrl</code> prevent?</span>
+    <p>An open redirect. Without it, <code class="inl">/Account/Login?ReturnUrl=https://evil.example</code> would bounce the user off-site right after a genuine sign-in — a convincing phishing vector.</p>
+  </div>
+</article>
+
+<article class="file" id="f-web-cats">
+  <h3>Pages/Categories/ — Index, Create, Details, Edit, Delete <span class="marks">5a, 5b — 10 marks</span></h3>
+  <p class="role">Staff-only CRUD. No <code class="inl">[Authorize]</code> attributes — the folder rule covers them.</p>
+  <pre class="c">&lt;div asp-validation-summary=<span class="s">"ModelOnly"</span> class=<span class="s">"alert alert-danger"</span>&gt;&lt;/div&gt;
+&lt;label asp-for=<span class="s">"Input.CategoryCode"</span>&gt;&lt;/label&gt;
+&lt;input asp-for=<span class="s">"Input.CategoryCode"</span> class=<span class="s">"form-control"</span> /&gt;
+&lt;span asp-validation-for=<span class="s">"Input.CategoryCode"</span> class=<span class="s">"text-danger"</span>&gt;&lt;/span&gt;</pre>
+  <div class="sx">
+  <table class="t">
+    <thead><tr><th>Tag helper</th><th>What it emits</th></tr></thead>
+    <tbody>
+      <tr><td><code class="inl">asp-for</code> (label)</td><td>Text from <code class="inl">[Display(Name=…)]</code> or the property name</td></tr>
+      <tr><td><code class="inl">asp-for</code> (input)</td><td><code class="inl">name</code>, <code class="inl">id</code>, current value, <code class="inl">data-val-*</code> rules</td></tr>
+      <tr><td><code class="inl">asp-validation-for</code></td><td>An empty span the client script fills</td></tr>
+      <tr><td><code class="inl">asp-validation-summary="ModelOnly"</code></td><td>Form-level errors only, so field errors don't double up</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <pre class="c">Input.CategoryCode = Code;
+ModelState.Remove(<span class="s">$"{nameof(Input)}.{nameof(Input.CategoryCode)}"</span>);</pre>
+  <div class="warn"><strong>Explain this carefully — it's a real bug you fixed.</strong> Browsers don't submit <code class="inl">disabled</code> fields, so binding recorded "required" against a field the user can't see. Because the summary is <code class="inl">ModelOnly</code>, the error was never rendered and the page silently redisplayed. Re-assigning the value isn't enough — ModelState already recorded the failure and doesn't re-evaluate, so the stale entry must be removed.</div>
+</article>
+
+<article class="file" id="f-web-items">
+  <h3>Pages/CollectionItems/ — Index, Create, Details, Edit, Delete <span class="marks">6a, 6c — 10 marks</span></h3>
+  <pre class="c">Result = <span class="k">await</span> _apiClient.GetCollectionItemsAsync(
+    userName: User.Identity!.Name,   <span class="m">// ← from the cookie, never the request</span>
+    search:   Search, page: PageNumber, pageSize: PageSize);</pre>
+  <p>A user cannot list someone else's collection by editing the URL, because the URL has no say in whose collection is queried.</p>
+  <pre class="c"><span class="k">public</span> <span class="k">int</span> TotalPages =&gt; Result.PageSize == 0 ? 1
+    : (<span class="k">int</span>)<span class="t">Math</span>.Ceiling(Result.TotalCount / (<span class="k">double</span>)Result.PageSize);</pre>
+  <p>The <code class="inl">(double)</code> cast matters — without it <code class="inl">14 / 10</code> is integer division giving 1, and the last page is unreachable.</p>
+  <pre class="c">&lt;input type=<span class="s">"checkbox"</span> name=<span class="s">"Input.CategoryCodes"</span> value=<span class="s">"@option.Value"</span> … /&gt;</pre>
+  <pre class="c"><span class="k">if</span> (!ModelState.IsValid)
+{
+    <span class="k">await</span> LoadCategoryOptionsAsync();   <span class="m">// ← easy to forget</span>
+    <span class="k">return</span> Page();
+}</pre>
+  <div class="warn"><strong>Common mistake:</strong> the checkbox options aren't part of the posted form. Re-rendering without reloading them gives the user their data back with an empty category list.</div>
+  <p>Edit and Details both verify ownership on GET, and the API enforces the same rule independently.</p>
+</article>
+
+<article class="file starred" id="f-web-insights">
+  <h3>Pages/Insights/ — Index.cshtml + Index.cshtml.cs ★</h3>
+  <p class="role">Five JSON handlers that relay to the API server-side, plus the dashboard shell.</p>
+  <pre class="c"><span class="m">// GET /Insights?handler=Overview</span>
+<span class="k">public</span> <span class="t">Task</span>&lt;<span class="t">JsonResult</span>&gt; OnGetOverviewAsync() =&gt;
+    SafeJsonAsync(() =&gt; _apiClient.GetVaultOverviewAsync(), <span class="s">"overview"</span>);</pre>
+  <div class="ask">
+    <span class="q">How does <code class="inl">?handler=Overview</code> map to that method?</span>
+    <p>Razor Pages convention: <code class="inl">OnGet</code> + <strong>HandlerName</strong> + <code class="inl">Async</code>. The framework strips prefix and suffix, so <code class="inl">OnGet<strong>Overview</strong>Async</code> is reachable as <code class="inl">?handler=<strong>Overview</strong></code>. No routing configuration needed.</p>
+  </div>
+  <pre class="c"><span class="k">private</span> <span class="k">async</span> <span class="t">Task</span>&lt;<span class="t">JsonResult</span>&gt; SafeJsonAsync&lt;T&gt;(<span class="t">Func</span>&lt;<span class="t">Task</span>&lt;T&gt;&gt; load, <span class="k">string</span> panelName)
+{
+    <span class="k">try</span> { <span class="k">return</span> <span class="k">new</span> <span class="t">JsonResult</span>(<span class="k">await</span> load()); }
+    <span class="k">catch</span> (<span class="t">ApiClientException</span> ex)
+    { <span class="k">return</span> <span class="k">new</span> <span class="t">JsonResult</span>(<span class="k">new</span> { error = ex.Message }) { StatusCode = 502 }; }
+}</pre>
+  <p>A generic helper taking <code class="inl">Func&lt;Task&lt;T&gt;&gt;</code> — a deferred async call — so all five handlers share one error path. <strong>502 Bad Gateway</strong> is the honest code: this server is fine, the upstream one isn't.</p>
+  <div class="warn"><strong>The architectural point:</strong> these handlers are same-origin. The browser never contacts port 5001. No CORS, the API address stays server-side, and because they live in <code class="inl">/Insights</code> they inherit <code class="inl">StaffOnly</code> — the data is as protected as the page.</div>
+</article>
+
+<article class="file starred" id="f-web-js">
+  <h3>wwwroot/js/insights.js ★</h3>
+  <p class="role">Fetches the handlers and renders KPIs, charts, the leaderboard and highlights.</p>
+  <pre class="c"><span class="k">const</span> body = <span class="k">await</span> response.json().catch(() =&gt; <span class="k">null</span>);
+<span class="k">if</span> (!response.ok || (body &amp;&amp; body.error)) {
+    <span class="k">throw new</span> Error((body &amp;&amp; body.error) || <span class="s">`Request failed (${response.status})`</span>);
+}</pre>
+  <p>Checks the status <em>and</em> an <code class="inl">error</code> property, because the handler returns 502 with a JSON body. The <code class="inl">.catch(() =&gt; null)</code> stops a non-JSON response throwing a second, confusing error.</p>
+  <pre class="c">Promise.all([renderOverview(), renderDemand(), renderCategories(), renderActivity(), renderHighlights()]);</pre>
+  <p>All five fire in parallel, each with its own try/catch — one failing panel shows an inline notice while the other four render normally.</p>
+  <pre class="c"><span class="k">if</span> (categoryChart) { categoryChart.destroy(); categoryChart = <span class="k">null</span>; }</pre>
+  <div class="ask">
+    <span class="q">Why destroy the chart first?</span>
+    <p>Chart.js binds to a canvas. Creating a second chart on the same canvas leaves the old one attached — tooltips flicker between datasets and memory leaks on every refresh.</p>
+  </div>
+  <pre class="c"><span class="k">function</span> escapeHtml(value) {
+    <span class="k">const</span> div = document.createElement(<span class="s">'div'</span>);
+    div.textContent = value ?? <span class="s">''</span>;
+    <span class="k">return</span> div.innerHTML;
+}</pre>
+  <div class="warn"><strong>Security point worth raising unprompted:</strong> the leaderboard builds rows with <code class="inl">innerHTML</code> and item names are user-supplied. Without escaping, a collector could name an item <code class="inl">&lt;script&gt;…&lt;/script&gt;</code> and it would execute in a staff member's browser — stored XSS. Setting <code class="inl">textContent</code> and reading back <code class="inl">innerHTML</code> lets the browser escape it.</div>
+</article>
+
+<article class="file" id="f-config">
+  <h3>Configuration files</h3>
+  <div class="sx">
+  <table class="t">
+    <thead><tr><th>File</th><th>Key content</th></tr></thead>
+    <tbody>
+      <tr><td><code class="inl">Api/appsettings.json</code></td><td><code class="inl">"DefaultConnection": "Data Source=arcanevault.db"</code></td></tr>
+      <tr><td><code class="inl">Web/appsettings.json</code></td><td><code class="inl">"ApiBaseUrl": "http://localhost:5001"</code></td></tr>
+      <tr><td><code class="inl">Api/launchSettings.json</code></td><td>Ports 5001/7001, opens <code class="inl">swagger</code></td></tr>
+      <tr><td><code class="inl">Web/launchSettings.json</code></td><td>Ports 5002/7002</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <pre class="c">&lt;PackageReference Include=<span class="s">"Microsoft.EntityFrameworkCore.Sqlite"</span> Version=<span class="s">"10.0.0"</span> /&gt;
+&lt;PackageReference Include=<span class="s">"Microsoft.EntityFrameworkCore.Design"</span> Version=<span class="s">"10.0.0"</span> /&gt;
+&lt;PackageReference Include=<span class="s">"SQLitePCLRaw.bundle_e_sqlite3"</span> Version=<span class="s">"3.0.4"</span> /&gt;
+&lt;PackageReference Include=<span class="s">"Swashbuckle.AspNetCore"</span> Version=<span class="s">"7.2.0"</span> /&gt;</pre>
+  <ul>
+    <li><code class="inl">…Design</code> makes <code class="inl">dotnet ef</code> work; marked <code class="inl">PrivateAssets="all"</code> so it isn't shipped.</li>
+    <li><code class="inl">SQLitePCLRaw</code> is pinned — the version EF pulls in transitively has a published security advisory.</li>
+    <li><strong>ArcaneVault.Web has no package references at all</strong> — everything it uses is in the shared framework.</li>
+  </ul>
+</article>
+
+<!-- ================= PART V ================= -->
+<h2 class="part" id="demo-prep"><span class="n">Part V</span>The demonstration</h2>
+<p class="lede">Worth 10 marks on its own. The rubric's top band is "relevant answers with insightful elaborations" — so showing the system is only half of it.</p>
+
+<h3 class="sec">Before you start</h3>
+<ol>
+  <li>Start <strong>ArcaneVault.Api</strong> first; wait for <code class="inl">Now listening on: http://localhost:5001</code>.</li>
+  <li>Start <strong>ArcaneVault.Web</strong>.</li>
+  <li>Have Swagger open in a second tab, already loaded.</li>
+  <li>If you've been testing, delete <code class="inl">arcanevault.db*</code> and restart the API so the data is pristine.</li>
+</ol>
+
+<h3 class="sec" id="demo-run">★ The run, in order</h3>
+<div class="sx">
+<table class="t">
+  <thead><tr><th class="n">#</th><th>Do this</th><th>Say this</th></tr></thead>
+  <tbody>
+    <tr><td class="n">1</td><td>Swagger → expand <code class="inl">GET /api/insights/demand</code> → Execute</td><td>"The API runs completely independently of the front end — this is live JSON."</td></tr>
+    <tr><td class="n">2</td><td>Web app, logged out. Point at the navbar</td><td>"Logged out, the navbar only offers Register and Login."</td></tr>
+    <tr><td class="n">3</td><td>Register with a <em>duplicate</em> email first</td><td>"Three validation layers — browser checks format, server checks ModelState, API owns the uniqueness rule it's the only tier that can see."</td></tr>
+    <tr><td class="n">4</td><td>Fix the email, register, log in</td><td>"Passwords are hashed with PBKDF2 — the database never contains plain text."</td></tr>
+    <tr><td class="n">5</td><td>Navbar shows Logout + username, <strong>My Collection</strong> only</td><td>"As a collector there's no Categories link — that's staff-only master data."</td></tr>
+    <tr><td class="n">6</td><td>Type <code class="inl">/Categories</code> in the address bar → Access Denied</td><td><strong>"Hiding the link is cosmetic. The real boundary is a StaffOnly policy on the whole folder, so it holds against a direct URL."</strong> ← earns marks</td></tr>
+    <tr><td class="n">7</td><td>Log out, log in as <code class="inl">staff</code></td><td>"Staff land on analytics; collectors land on their collection."</td></tr>
+    <tr><td class="n">8</td><td>Category CRUD: create, edit, then try deleting <strong>TCG</strong></td><td>"Refused because 24 items still use it. The FK is Restrict, but the API checks first so you get a sentence instead of a database error."</td></tr>
+    <tr><td class="n">9</td><td>My Collection → search <code class="inl">Coins</code>, then <code class="inl">47</code></td><td>"One box matching any field. Numeric comparisons only engage when the term parses as a number."</td></tr>
+    <tr><td class="n">10</td><td>Add an item, tick two categories, save</td><td>"That's the many-to-many — the join table's composite key makes a duplicate pairing impossible."</td></tr>
+    <tr><td class="n">11</td><td>Edit it, set current above starting → rejected</td><td>"A rule DataAnnotations can't express on one property, so it's checked in the PageModel and again in the API."</td></tr>
+    <tr><td class="n">12</td><td><strong>Vault Insights</strong> — KPI row, then the leaderboard</td><td>See below — this is where the 20 feature marks live.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3 class="sec" id="demo-pitch">★ Pitching the feature (step 12)</h3>
+<p>Lead with the <em>insight</em>, not the UI:</p>
+<div class="note">
+  <p style="margin:0 0 9px">"The brief gave me a schema where every collection item stores <strong>two</strong> quantities — what the collector originally acquired, and what they still hold. There's no reason to store both unless the difference means something, and that difference is the only evidence in the whole system that a collectible has actually <em>left</em> a collection."</p>
+  <p style="margin:0 0 9px">"So I aggregated that gap across every collector and turned it into a Demand Index — turnover weighted at 50%, how widely held it is at 30%, and how little remains in circulation at 20%. Reach and scarcity are normalised against the strongest item, because 'held by 8 people' and '72% turnover' aren't otherwise comparable numbers."</p>
+  <p style="margin:0">"And the Background section of the brief says Arcane Vault wants to understand popular items, engagement, and market demand before committing to the marketplace. This answers all of that from the prototype's own data."</p>
+</div>
+<div class="warn">
+  <strong>Then point at the Charizard row — your best single moment:</strong>
+  <p style="margin:8px 0 0">"Charizard actually has the <em>higher</em> turnover than the item above it — 78.4% versus 75% — but a lower index, because it's held by one fewer collector and reach is 30% of the score. If I'd just sorted by turnover the ranking would be the other way round and the business would have been told the wrong thing. That trade-off is the whole reason it's a composite metric."</p>
+</div>
+
+<h3 class="sec" id="demo-qa">Questions you should expect</h3>
+
+<details class="d"><summary>"Why two separate projects instead of one?"</summary><div class="body">
+<p>The assignment grades a Razor Pages app and a Web API as separate deliverables, so separating them lets each be demonstrated independently — Swagger proves the API stands alone. It also enforces a real boundary: the web project has no DbContext, so it physically cannot bypass the API.</p></div></details>
+
+<details class="d"><summary>"Why doesn't the browser call the API directly?"</summary><div class="body">
+<p>Three reasons. No CORS configuration is needed, because the browser only talks to port 5002 and the cross-port hop happens server-to-server. The API's address never reaches the client. And the dashboard's data handlers inherit the page's StaffOnly policy.</p></div></details>
+
+<details class="d"><summary>"Why did you add columns to the schema?"</summary><div class="body">
+<p>Three columns. <code>PasswordHash</code> is a necessity — the brief requires login, impossible without storing a credential. <code>CreatedAt</code> and <code>LastUpdatedAt</code> power the activity chart and the 30-day engagement metric. The brief explicitly permits adding columns for the feature, and no specified column, key or relationship was changed.</p></div></details>
+
+<details class="d"><summary>"Why soft delete on items but hard delete on categories?"</summary><div class="body">
+<p>It follows the schema. <code>CollectionItems</code> has an <code>IsDeleted</code> column and <code>Categories</code> doesn't — so items are hidden rather than destroyed, which also preserves the demand history. Categories are genuinely removed but protected by a Restrict foreign key.</p></div></details>
+
+<details class="d"><summary>"Where does the role come from — could a user fake it?"</summary><div class="body">
+<p>No. At login the API verifies the password and returns the role from the database. The web app writes it into a Role claim inside a signed, encrypted cookie the browser can't read or forge. And self-registration always assigns the User role in the API, so a visitor can't grant themselves Staff even by tampering with the form.</p></div></details>
+
+<details class="d"><summary>"Tell me about a problem you ran into." (near-certain)</summary><div class="body">
+<p>Lead with the SQLite one — it's the most technical. The demand aggregation originally counted distinct owners inside a <code>GroupBy</code>. It compiles fine but throws at runtime because SQLite can't express that without the APPLY operation. Fixed by fetching four narrow columns and grouping in memory.</p>
+<p>If they want a second, the <code>ActionResult&lt;T&gt;.Value</code> one is good: two insights silently never appeared because <code>.Value</code> is null when you return <code>Ok(...)</code>. All five bugs are in Part III.</p></div></details>
+
+<details class="d"><summary>"Why those weights? Why not equal thirds?"</summary><div class="body">
+<p>Because the components aren't equally strong evidence. Units physically leaving collections is a direct observation; reach and scarcity qualify it. High turnover on an item one person owns is much weaker evidence than the same turnover across eight collectors. The weights are named constants at the top of the controller, so they're a tunable business decision rather than magic numbers.</p></div></details>
+
+<details class="d"><summary>"How would you extend this?"</summary><div class="body">
+<p>The biggest limitation is that collectibles are matched by name, because the prototype schema has no shared catalogue table. A real version would add a master <code>Collectibles</code> table so two people owning the same card reference the same row. Beyond that, the Demand Index is the natural input to the trade-matching engine the marketplace would need.</p></div></details>
+
+<h3 class="sec" id="demo-break">If something breaks mid-demo</h3>
+<ul>
+  <li><strong>"Could not reach the Arcane Vault API"</strong> — the API isn't running. Start it; the page recovers on refresh. Say it out loud: <em>"that's the ApiClient's friendly error handling rather than an unhandled exception."</em></li>
+  <li><strong>Dashboard empty</strong> — delete <code class="inl">arcanevault.db*</code>, restart the API, refresh.</li>
+  <li><strong>Port in use</strong> — an old instance is running. Kill it, or change the ports in <code class="inl">launchSettings.json</code> and <code class="inl">ApiBaseUrl</code> together.</li>
+</ul>
+
+<!-- ================= PART VI ================= -->
+<h2 class="part" id="syntax"><span class="n">Part VI</span>Reference</h2>
+
+<h3 class="sec">C# syntax you'll be asked about</h3>
+<div class="grid2">
+  <div class="gitem"><code>async Task&lt;T&gt; / await</code><p>Marks a method asynchronous; <code>await</code> pauses until the database or HTTP call completes without blocking the thread.</p></div>
+  <div class="gitem"><code>=&gt; expression body</code><p>Shorthand for a method whose body is a single expression. Used throughout ApiClient.</p></div>
+  <div class="gitem"><code>is not null</code><p>Pattern-matching null check, preferred over <code>!= null</code> because it can't be affected by an overloaded <code>==</code>.</p></div>
+  <div class="gitem"><code>[] collection expression</code><p>C# 12 shorthand. <code>= [];</code> replaces <code>= Array.Empty&lt;T&gt;()</code>.</p></div>
+  <div class="gitem"><code>record</code><p>Used for <code>RawSignal</code> — a small immutable value carrier. DTOs stay plain classes because the model binder mutates them.</p></div>
+  <div class="gitem"><code>switch expression</code><p><code>demandIndex switch { &gt;= 60m =&gt; "Hot", … }</code> — relational patterns banding a number into labels.</p></div>
+  <div class="gitem"><code>EF.Functions.Like</code><p>Translates to a real SQL <code>LIKE</code> so filtering runs inside SQLite.</p></div>
+  <div class="gitem"><code>FindAsync vs FirstOrDefaultAsync</code><p><code>FindAsync</code> looks up by key and checks the change tracker first. <code>FirstOrDefaultAsync</code> always queries and is needed with <code>.Include(...)</code>.</p></div>
+  <div class="gitem"><code>nameof(...)</code><p>Compile-time reference to a member's name, so renaming can't silently break a route or ModelState key.</p></div>
+  <div class="gitem"><code>?. and ??</code><p>Null-conditional and null-coalescing. <code>User.Identity?.IsAuthenticated</code> won't throw when there's no identity.</p></div>
+  <div class="gitem"><code>ClaimTypes.Role</code><p>The claim <code>User.IsInRole("Staff")</code> and the StaffOnly policy both read. Set once at login from the database.</p></div>
+  <div class="gitem"><code>Url.IsLocalUrl(...)</code><p>Guards the login <code>ReturnUrl</code> against open-redirect attacks.</p></div>
+</div>
+
+<h3 class="sec" id="cheat">One-page cheat sheet</h3>
+<div class="sx">
+<table class="t">
+  <thead><tr><th>Topic</th><th>The one-line answer</th></tr></thead>
+  <tbody>
+    <tr><td>Architecture</td><td>Two projects; only the API has a DbContext; the browser only ever talks to port 5002.</td></tr>
+    <tr><td>No CORS</td><td>The cross-port hop is server-to-server, where the same-origin policy doesn't apply.</td></tr>
+    <tr><td>Many-to-many</td><td>Explicit join entity with a composite key of <code class="inl">(ItemId, CategoryCode)</code>, configured in <code class="inl">UsingEntity</code>.</td></tr>
+    <tr><td>Why DTOs</td><td>Breaks reference cycles, and keeps <code class="inl">PasswordHash</code> off the wire.</td></tr>
+    <tr><td>Passwords</td><td>PBKDF2 with a per-user salt; plain text is never stored.</td></tr>
+    <tr><td>Role security</td><td>Role claim in a signed cookie; enforced by a folder-level policy, not by hiding links.</td></tr>
+    <tr><td>Delete protection</td><td>FK is Restrict; the API checks first so the user gets a sentence, not SQLite Error 19.</td></tr>
+    <tr><td>Soft delete</td><td>Items are hidden, not destroyed — preserves the demand history.</td></tr>
+    <tr><td>Any-field search</td><td>One box, six fields; numeric comparisons only engage when the term parses as a number.</td></tr>
+    <tr><td><strong>The feature</strong></td><td>Two quantity columns exist; their difference is the only demand signal in the system.</td></tr>
+    <tr><td><strong>The formula</strong></td><td>Turnover×0.50 + Reach×0.30 + Scarcity×0.20, each normalised to 0–100.</td></tr>
+    <tr><td><strong>Best example</strong></td><td>Charizard: higher turnover, lower index — because reach is 30% of the score.</td></tr>
+    <tr><td>Hardest bug</td><td>SQLite can't translate <code class="inl">Distinct().Count()</code> inside a <code class="inl">GroupBy</code> — needs SQL APPLY.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<footer class="end">Arcane Vault — IT2814 · LIM RUI YANG RYAN · 252206Z · IT2508 · Complete documentation, Parts I–VI</footer>
+</main>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var MAX_REACH = 8, MAX_REMAINING = 15;
+  var W_TURN = 0.50, W_REACH = 0.30, W_SCAR = 0.20;
+
+  function el(id){ return document.getElementById(id); }
+  function round1(n){ return Math.round(n * 10) / 10; }
+  function tierOf(i){
+    if (i >= 60) return ['Hot','hot'];
+    if (i >= 40) return ['Rising','rising'];
+    if (i >= 20) return ['Steady','steady'];
+    return ['Dormant','dormant'];
+  }
+
+  function update() {
+    var start = el('cStart'), curr = el('cCurr'), hold = el('cHold');
+    if (!start) return;
+
+    var s = parseInt(start.value, 10);
+    var c = parseInt(curr.value, 10);
+    if (c > s) { c = s; curr.value = String(c); }
+    var h = parseInt(hold.value, 10);
+
+    var moved    = s - c;
+    var turnover = s === 0 ? 0 : round1(moved / s * 100);
+    var reach    = round1(h / MAX_REACH * 100);
+    var scarcity = round1((1 - Math.min(c, MAX_REMAINING) / MAX_REMAINING) * 100);
+    var index    = round1(turnover * W_TURN + reach * W_REACH + scarcity * W_SCAR);
+
+    el('vStart').textContent = s;
+    el('vCurr').textContent  = c;
+    el('vHold').textContent  = h;
+    el('nTurn').textContent  = turnover.toFixed(1);
+    el('nReach').textContent = reach.toFixed(1);
+    el('nScar').textContent  = scarcity.toFixed(1);
+    el('bTurn').style.width  = Math.max(0, Math.min(100, turnover)) + '%';
+    el('bReach').style.width = Math.max(0, Math.min(100, reach)) + '%';
+    el('bScar').style.width  = Math.max(0, Math.min(100, scarcity)) + '%';
+    el('score').textContent  = index.toFixed(1);
+
+    var t = tierOf(index);
+    var pill = el('tier');
+    pill.textContent = t[0];
+    pill.className = 'pill ' + t[1];
+
+    el('formula').textContent =
+      turnover.toFixed(1) + '×0.50 + ' + reach.toFixed(1) + '×0.30 + ' +
+      scarcity.toFixed(1) + '×0.20  =  ' + index.toFixed(1);
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    ['cStart','cCurr','cHold'].forEach(function (id) {
+      var e = el(id);
+      if (e) e.addEventListener('input', update);
+    });
+    update();
+  });
+})();
+</script>
+</body>
+</html>
